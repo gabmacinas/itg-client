@@ -12,6 +12,8 @@
   --opac-dark: rgba(0, 0, 0, 0.104);
   --primary:#FEE603;
   --secondary: #e3b205;
+  --bs-primary: #FEE603;
+  --bs-primary-rgb: #FEE603;
   --bs-success-rgb: 254,230,3;
   --bs-info-rgb: 254,230,3;
   --bs-warning-rgb: 254,230,3;
@@ -34,7 +36,6 @@
   
   #sm-logo { width: 40px; margin-right: 30px;}
   
-  
   /** CARDS **/
   .card-icon {background-color: var(--dark);font-size: 30px;color: var(--primary); border-radius: 100%;z-index: 4;padding: 12px;}
   .card-outer {background: linear-gradient(138deg, var(--primary), #1f232b 100%);padding: 3px;border-radius: 30px; margin: 20px;margin-top: -26px;}
@@ -42,7 +43,7 @@
   .card-inner:hover {transition: 300ms; background: var(--darkgrey);}
   .card-header {padding-top: 16px;border-style: none;}
   
-  .btn { background: var(--primary); border-style: none; color: var(--dark); --dark: #1F212B; --dark-rgb: 31,33,43; }
+  .btn, .btn:hover, .btn:checked, .btn:focus { background: var(--primary); border-style: none; color: var(--dark); --dark: #1F212B; --dark-rgb: 31,33,43; }
   .btn-check:active + .btn-primary:focus, .btn-check:checked + .btn-primary:focus, .btn-primary.active:focus, .btn-primary:active:focus, .show > .btn-primary.dropdown-toggle:focus {box-shadow: 0 0 0 .25rem var(--opac-dark); background: var(--primary);}
   .btn-check:active + .btn-primary, .btn-check:checked + .btn-primary, .btn-primary.active, .btn-primary:active  .show > .btn-primary.dropdown-toggle {color: var(--white); border-color: transparent; background: var(--primary); }
   
@@ -56,7 +57,7 @@
   .faq-section {background: var(--dark);}
   
   /** NAVIGATION **/
-  
+  .nav-link, .nav-link:hover {color: var(--primary);}
   .navigation-clean.navbar-light .navbar-nav .nav-link.active, .navigation-clean.navbar-light .navbar-nav .nav-link.active:focus, .navigation-clean.navbar-light .navbar-nav .nav-link.active:hover {box-shadow: none; background: none; color: var(--primary);}
   .navbar-toggler {padding: .25rem .75rem;font-size: 1.25rem;line-height: 1;border: 1px solid transparent;border-radius: .25rem;transition: box-shadow .15s ease-in-out;background: var(--secondary);}
   
@@ -123,5 +124,5 @@
   }
   
   @media (max-width:991px) {
-     .footer-dark .item.social { text-align: center;  margin-top: 20px;}
+    .footer-dark .item.social { text-align: center;  margin-top: 20px;}
   }
