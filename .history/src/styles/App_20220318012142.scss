@@ -1,0 +1,113 @@
+
+/* Pinegrow generated Theme Init Begin */
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Montserrat:100,200,300,400,500,600,700,800,900|Open+Sans:300,400,600,700,800|Montserrat:100,200,300,400,500,600,700,800,900|Montserrat:100,200,300,400,500,600,700,800,900|Montserrat:100,200,300,400,500,600,700,800,900|Montserrat:100,200,300,400,500,600,700,800,900|Montserrat:100,200,300,400,500,600,700,800,900&display=swap');
+
+$primary: #fee603;
+$secondary: #eabf08;
+$info: #0dcaf0;
+$success: #198754;
+$warning: #ffc107;
+$danger: #dc3545;
+$white: white;
+$light: #f8f9fa;
+$dark: #212529;
+$font-family-sans-serif: 'Open Sans', sans-serif;
+$headings-font-family: 'Montserrat', sans-serif;
+$headings-font-weight: 700;
+html { font-size: 100% !important; }
+$grid-gutter-width: 36px;
+$border-radius: 0rem;
+$border-radius-lg: 0rem;
+$border-radius-sm: 0rem;
+$dropdown-border-radius: .25rem !default;
+$btn-border-radius: 0.25rem;
+$btn-border-radius-lg: 0.3rem;
+$btn-border-radius-sm: 0.2rem;
+$enable-shadows: false;
+$enable-negative-margins: true;
+$enable-gradients: false;
+$min-contrast-ratio: 4.5;
+
+h1, h2, h3, h4, h5, h6 {
+    letter-spacing: 1px;
+}
+.lead {
+    font-family: 'Open Sans', sans-serif;
+}
+h1 {
+    font-family: 'Montserrat', sans-serif !important;
+    font-weight: 700 !important;
+    color: $primary !important;
+}
+h2 {
+    font-family: 'Montserrat', sans-serif !important;
+}
+h3 {
+    font-family: 'Montserrat', sans-serif !important;
+}
+h4 {
+    font-family: 'Montserrat', sans-serif !important;
+}
+h5 {
+    font-family: 'Montserrat', sans-serif !important;
+}body, html {
+    min-height: 100vh;
+}
+
+    /* Pinegrow generated Theme Init End */
+/* Bootstrap theme customized with Pinegrow Web Editor */
+/* Vars go before the @import */
+
+/* Click on the Uncomment icon in the Style panel to uncomment and customize the variables: */
+
+//$primary: #007bff;
+//$secondary: #6c757d;
+//$success: #28a745;
+//$info: #17a2b8;
+//$warning: #ffc107;
+//$danger: #dc3545;
+//$light: #f8f9fa;
+//$dark: #343a40;
+
+//$body-bg: #ffffff;
+//$body-color: #212529;
+
+/* Import web fonts - Must come before any CSS rules. Refresh the Page view after making changes to import statements. */
+//@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;400;700&family=Playfair+Display:wght@400;700;900&display=swap');
+
+//$font-family-sans-serif: 'Lato', sans-serif;
+//$headings-font-family: 'Playfair Display', serif;
+
+@import "~bootstrap/scss/bootstrap";
+
+/* Custom CSS rules come here */
+
+/* Pinegrow generated Additional Rules Begin */
+
+h1, h2, h3, h4, h5, h6 {
+    letter-spacing: 1px;
+}
+.lead {
+    font-family: 'Open Sans', sans-serif;
+}
+h1 {
+    font-family: 'Montserrat', sans-serif !important;
+    font-weight: 700 !important;
+    color: $primary !important;
+}
+h2 {
+    font-family: 'Montserrat', sans-serif !important;
+}
+h3 {
+    font-family: 'Montserrat', sans-serif !important;
+}
+h4 {
+    font-family: 'Montserrat', sans-serif !important;
+}
+h5 {
+    font-family: 'Montserrat', sans-serif !important;
+}body, html {
+    min-height: 100vh;
+}
+
+    /* Pinegrow generated Additional Rules End */

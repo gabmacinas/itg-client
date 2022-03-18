@@ -4,7 +4,7 @@ import './styles/App.scss';
 
 function App () {
   return (
-    <>
+    <div className='body'>
       <nav className='navbar navbar-expand-lg navbar-light navigation-clean sticky-top'>
         <div className='container'>
           <a className='navbar-brand' href='#'>
@@ -69,7 +69,7 @@ function App () {
         <div className='container'>
           <div className='row d-flex align-items-center align-content-center' id='main-intro-container'>
             <div className='col-md-6' id='hero-left'>
-              <h1 className='animated fw-bold intro-head pulse' id='main-heading' style={{ color: '#FEE603' }}>
+              <h1 className='animated fw-bold intro-head pulse text-primary' id='main-heading'>
                 In The Game
               </h1>
               <h3 className='fw-bold' id='sub-head'>
@@ -201,7 +201,7 @@ function App () {
           <p className='copyright'>In The Game © 2022</p>
         </div>
       </footer>
-    </>
+    </div>
   );
 }
 

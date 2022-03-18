@@ -4,7 +4,7 @@ import './styles/App.scss';
 
 function App () {
   return (
-    <>
+    <div className='body'>
       <nav className='navbar navbar-expand-lg navbar-light navigation-clean sticky-top'>
         <div className='container'>
           <a className='navbar-brand' href='#'>
@@ -201,7 +201,7 @@ function App () {
           <p className='copyright'>In The Game © 2022</p>
         </div>
       </footer>
-    </>
+    </div>
   );
 }
 
