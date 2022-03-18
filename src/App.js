@@ -20,8 +20,8 @@ function App () {
   };
   return (
     <>
-      <Navbar />
         <Router>
+          <Navbar />
           <InternalRoute/>
         </Router>
       <Footer />
