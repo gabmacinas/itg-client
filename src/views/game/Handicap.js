@@ -17,7 +17,7 @@ export default function Handicap () {
                 <hr className='border-secondary mb-0 mt-0' />
               </div>
               <div className='col-auto'>
-                <h2 className='fw-bold h4 mb-0 text-primary text-uppercase'>Game Demo</h2>
+                <h2 className='fw-bold h4 mb-0 text-uppercase' style={{ color: '#fee600' }}>Game Demo</h2>
               </div>
               <div className='col'>
                 <hr className='border-secondary mb-0 mt-0' />
