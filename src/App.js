@@ -11,6 +11,7 @@ import Home from './views/home/Home';
 import Handicap from './views/game/Handicap';
 
 function App () {
+  // const navigate = useNavigate();
   const InternalRoute = () => {
     const routes = useRoutes([
       { path: '/', element: <Home /> },
@@ -18,10 +19,11 @@ function App () {
     ]);
     return routes;
   };
+
   return (
     <>
         <Router>
-          <Navbar />
+          <Navbar/>
           <InternalRoute/>
         </Router>
       <Footer />
