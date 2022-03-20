@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 export default function footer () {
   return (
@@ -46,5 +46,5 @@ export default function footer () {
           <p className='copyright'>In The Game © 2022</p>
         </div>
       </footer>
-  );
+  )
 }

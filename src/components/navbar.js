@@ -1,9 +1,9 @@
-import React from 'react';
-import { Navbar, Nav, NavDropdown, Container, Button } from 'react-bootstrap';
+import React from 'react'
+import { Navbar, Nav, NavDropdown, Container, Button } from 'react-bootstrap'
 const navbar = ({ authenticate, user, isAuthenticated, isAuthenticating, logout }) => {
   const getEthSubString = (ethAddress) => {
-    return `${ethAddress.substring(0, 5)}...${ethAddress.substring(ethAddress.length - 4)}`;
-  };
+    return `${ethAddress.substring(0, 5)}...${ethAddress.substring(ethAddress.length - 4)}`
+  }
 
   return (
     <Navbar collapseOnSelect variant='dark' expand='lg' sticky='top' className='navbar navigation-clean'>
@@ -53,7 +53,7 @@ const navbar = ({ authenticate, user, isAuthenticated, isAuthenticating, logout 
         </Navbar.Collapse>
       </Container>
     </Navbar>
-  );
-};
+  )
+}
 
-export default navbar;
+export default navbar

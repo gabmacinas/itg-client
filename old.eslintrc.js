@@ -8,15 +8,18 @@ module.exports = {
     'standard'
   ],
   parserOptions: {
+    ecmaVersion: 6,
+    sourceType: 'module',
+    allowImportExportEverywhere: true,
     ecmaFeatures: {
+      // modules: true,
       jsx: true
-    },
-    ecmaVersion: 12,
-    sourceType: 'module'
+    }
   },
   plugins: [
     'react'
   ],
   rules: {
+    semi: ['error', 'always']
   }
 }

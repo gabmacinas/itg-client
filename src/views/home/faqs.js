@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const Faqs = () => {
   return (
@@ -68,7 +68,7 @@ const Faqs = () => {
         </div>
       </section>
     </>
-  );
-};
+  )
+}
 
-export default Faqs;
+export default Faqs

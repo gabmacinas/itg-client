@@ -1,6 +1,6 @@
-import React from 'react';
-import { Tabs, Tab } from 'react-bootstrap';
-import PropTypes from 'prop-types';
+import React from 'react'
+import { Tabs, Tab } from 'react-bootstrap'
+import PropTypes from 'prop-types'
 
 const Handicap = ({ isAuthenticated }) => {
   return (
@@ -114,11 +114,11 @@ const Handicap = ({ isAuthenticated }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 Handicap.propTypes = {
   isAuthenticated: PropTypes.bool
-};
+}
 
-export default Handicap;
+export default Handicap
