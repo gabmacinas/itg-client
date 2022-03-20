@@ -41,7 +41,7 @@ function App () {
           <Route path='/' element={<Home />} />
           <Route path='/handicap' element={<Handicap user={user} />} />
           <Route path='/challenges' element={<Challenges isAuthenticated={isAuthenticated} />} />
-          <Route path='/prediction' element={<Prediction isAuthenticated={isAuthenticated} />} />
+          <Route path='/prediction' element={<Prediction user={user} />} />
 
           <Route path='/collections' element={<Collections isAuthenticated={isAuthenticated} />} />
           <Route path='/link' element={<BindAccount isAuthenticated={isAuthenticated} />} />
