@@ -1,7 +1,8 @@
 import React from 'react';
 import { Tabs, Tab } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 
-export default function Handicap () {
+const Handicap = ({ isAuthenticated }) => {
   return (
     <div className='text-white'>
       <div
@@ -114,4 +115,10 @@ export default function Handicap () {
       </div>
     </div>
   );
-}
+};
+
+Handicap.propTypes = {
+  isAuthenticated: PropTypes.bool
+};
+
+export default Handicap;

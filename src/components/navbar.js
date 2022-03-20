@@ -1,9 +1,6 @@
 import React from 'react';
-import { useMoralis } from 'react-moralis';
 import { Navbar, Nav, NavDropdown, Container, Button } from 'react-bootstrap';
-const navbar = ({ signOut }) => {
-  const { authenticate, user, isAuthenticated, isAuthenticating, logout } = useMoralis();
-
+const navbar = ({ authenticate, user, isAuthenticated, isAuthenticating, logout }) => {
   const getEthSubString = (ethAddress) => {
     return `${ethAddress.substring(0, 5)}...${ethAddress.substring(ethAddress.length - 4)}`;
   };
