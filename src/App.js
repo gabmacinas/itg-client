@@ -39,7 +39,7 @@ function App () {
       <React.Suspense fallback={loading}>
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/handicap' element={<Handicap isAuthenticated={isAuthenticated} />} />
+          <Route path='/handicap' element={<Handicap user={user} />} />
           <Route path='/challenges' element={<Challenges isAuthenticated={isAuthenticated} />} />
           <Route path='/prediction' element={<Prediction isAuthenticated={isAuthenticated} />} />
 
