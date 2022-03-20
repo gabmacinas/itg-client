@@ -23,6 +23,7 @@ const Prediction = React.lazy(() => import('./views/game/Prediction'))
 
 const BindAccount = React.lazy(() => import('./views/utils/BindAccount'))
 const Collections = React.lazy(() => import('./views/utils/Collections'))
+const TermsAndConditions = React.lazy(() => import('./views/TermsAndConditions'))
 
 function App () {
   const { authenticate, user, isAuthenticated, isAuthenticating, logout } = useMoralis()
@@ -44,6 +45,7 @@ function App () {
 
           <Route path='/collections' element={<Collections isAuthenticated={isAuthenticated} />} />
           <Route path='/link' element={<BindAccount isAuthenticated={isAuthenticated} />} />
+          <Route path='/terms' element={<TermsAndConditions />} />
         </Routes>
       </React.Suspense>
       <Footer />
