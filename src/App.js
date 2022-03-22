@@ -40,7 +40,7 @@ function App () {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/handicap' element={<Handicap user={user} />} />
-          <Route path='/challenges' element={<Challenges user={user} />} />
+          <Route path='/challenges' element={<Challenges user={user} isAuthenticated={isAuthenticated} />} />
           <Route path='/prediction' element={<Prediction user={user} />} />
 
           {/* <Route path='/collections' element={<Collections isAuthenticated={isAuthenticated} />} /> */}

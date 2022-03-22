@@ -5,14 +5,97 @@ import { useMoralis, useMoralisCloudFunction, useNewMoralisObject, useMoralisQue
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import Moment from 'react-moment'
+import Pagination from '../components/Pagination'
+import axios from 'axios'
 
-const Challenge = ({ user }) => {
-  const { enableWeb3, isAuthenticated, isWeb3Enabled } = useMoralis()
+const Challenge = ({ user, isAuthenticated }) => {
+  const { enableWeb3 } = useMoralis()
   const MySwal = withReactContent(Swal)
   const [onSelected, setOnSelected] = useState([])
   const [isMatchOver, setIsMatchOver] = useState(false)
   const [nftSelected, setNftSelected] = useState(null)
-  // const [inTheGameNfts, setInTheGameNfts] = useState([])
+  const [totalCount, setTotalCount] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [collectionsPerPage] = useState(30)
+  const [topShotCollected, setTopshotCollected] = useState([])
+  const [topShotSelected, setTopshotSelected] = useState([])
+
+  const offset = (currentPage - 1) * collectionsPerPage
+  const paginate = (pageNumber) => setCurrentPage(pageNumber)
+
+  const pushTopShotSelected = async (nftSelected) => {
+    // check if nft is already exists in the array
+    if (topShotSelected.find(nft => nft.id === nftSelected.id)) {
+      return
+    }
+    // else push the nft to the array
+    setTopshotSelected([...topShotSelected, nftSelected])
+  }
+
+  const removeTopShotSelected = async (nftSelected) => {
+    // remove from top shot selected array
+    setTopshotSelected(topShotSelected.filter(nft => nft.id !== nftSelected.id))
+  }
+
+  const getTopShot = async () => {
+    // if (user === null) return false
+    setTopshotCollected([])
+    const topShotUsername = await user.get('username')
+
+    const options = {
+      method: 'POST',
+      url: 'https://fxtj224aij.execute-api.us-east-1.amazonaws.com/api/top-shot',
+      headers: { 'Content-Type': 'application/json' },
+      data: {
+        requestType: 'topshot',
+        limit: collectionsPerPage,
+        offset: offset,
+        owner: topShotUsername,
+        sortDirection: 'DESC'
+      }
+    }
+
+    axios.request(options)
+      .then((data) => {
+        console.log('data', data)
+        const responseBody = data.data.body.data.getTokensPublic
+        console.log('responseBody', responseBody)
+        try {
+          console.log('totalCount', responseBody.totalCount)
+          const totalCount = responseBody?.totalCount
+          setTotalCount(totalCount)
+          if (totalCount > 0) {
+            setTopshotCollected(responseBody.tokens)
+          } else {
+            MySwal.fire({
+              title: 'Oops...',
+              text: 'You have not collected any TopShot yet!. Please collect some TopShot to continue.',
+              icon: 'info',
+              confirmButtonText: 'Go to TopShot',
+              denyButtonText: 'Link TopShot Account',
+              showCancelButton: true,
+              showDenyButton: true,
+              denyButtonColor: '#f6851a',
+              cancelButtonText: 'Ok'
+            }).then((result) => {
+              // if (result.isConfirmed) {
+              //   openInNewTab('https://nbatopshot.com/')
+              // } else if (result.isDenied) {
+              //   navigate('/link')
+              // } else {
+              //   navigate('/')
+              // }
+            })
+          }
+        } catch (error) {
+          // navigate('/link')
+          console.log('error', error)
+        }
+      })
+      .catch((err) => {
+        console.log('error', err)
+      })
+  }
 
   const { data: inTheGameNfts, fetch: getItgNfts } = useMoralisCloudFunction('getItgNfts', {
     tokenAddress: process.env.REACT_APP_NODE_ENV === 'production'
@@ -37,12 +120,11 @@ const Challenge = ({ user }) => {
 
   const submitBetting = (index, challenge) => {
     let hasEmptySubmission = false
-
     console.log('on selected before submit', onSelected[index])
-    if (onSelected[index].selection === '') hasEmptySubmission = true
+    if (topShotSelected.length === 0) hasEmptySubmission = true
     console.log('hasEmptySubs', hasEmptySubmission)
-
     if (!hasEmptySubmission && nftSelected !== null) {
+      enableWeb3()
       MySwal.fire({
         title: 'Are you sure?',
         text: "You won't be able to update your submission!",
@@ -53,11 +135,16 @@ const Challenge = ({ user }) => {
         confirmButtonText: 'Yes, submit it!'
       }).then(async (result) => {
         if (result.value) {
+          // get the name of the topshotSelected and push it in an array
+          const topshotSelectedName = []
+          for (let i = 0; i < topShotSelected.length; i++) {
+            topshotSelectedName.push(topShotSelected[i].title)
+          }
           const challengeBody = {
-            result: onSelected[index].selection,
+            result: topshotSelectedName,
             user,
             challenge,
-            onSelected: onSelected[index],
+            onSelected: topShotSelected,
             nftSelected: nftSelected.token_id
           }
           await save(challengeBody,
@@ -126,15 +213,16 @@ const Challenge = ({ user }) => {
   useEffect(() => {
     if (!isAuthenticated) return null
     const getSubmissions = async () => {
-      fetch()
-      getItgNfts()
+      await fetch()
+      await getItgNfts()
+      await getTopShot()
     }
     getSubmissions()
     // console.log('challengeSubmissions', challengeSubmissions)
-  }, [isWeb3Enabled, isAuthenticated])
+  }, [isAuthenticated])
 
   useEffect(() => {
-    enableWeb3()
+
     // fetch()
   }, [])
 
@@ -370,6 +458,33 @@ const Challenge = ({ user }) => {
           </>
             )}
           </div>
+          <div className='row'>
+              {topShotCollected.map((nft, index) => (
+                <div key={index} className='d-item col-lg-2 col-md-6 col-sm-6 col-xs-12' onClick={() => pushTopShotSelected(nft)}>
+                  <div className='nft__item'>
+                    <div className='nft__item_info'>
+                      <span>
+                        <h4>{nft.title}</h4>
+                      </span>
+                      <div className='nft__item_price pb-3'>{nft.description}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {totalCount > 30 && <Pagination collectionsPerPage={collectionsPerPage} totalCollections={totalCount} currentPage={currentPage} paginate={paginate} />}
+            {topShotSelected.map((nft, index) => (
+                <div key={index} className='d-item col-lg-2 col-md-6 col-sm-6 col-xs-12' onClick={() => removeTopShotSelected(nft)}>
+                  <div className='nft__item'>
+                    <div className='nft__item_info'>
+                      <span>
+                        <h4>{nft.title}</h4>
+                      </span>
+                      <div className='nft__item_price pb-3'>{nft.description}</div>
+                    </div>
+                  </div>
+                </div>
+            ))}
           </div>
       </div>
           </>
@@ -378,7 +493,8 @@ const Challenge = ({ user }) => {
 
 Challenge.propTypes = {
   user: PropTypes.object,
-  content: PropTypes.array
+  content: PropTypes.array,
+  isAuthenticated: PropTypes.bool
 }
 
 export default Challenge
