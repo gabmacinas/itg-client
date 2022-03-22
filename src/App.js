@@ -21,9 +21,9 @@ const Handicap = React.lazy(() => import('./views/game/Handicap'))
 const Challenges = React.lazy(() => import('./views/game/Challenges'))
 const Prediction = React.lazy(() => import('./views/game/Prediction'))
 
-const BindAccount = React.lazy(() => import('./views/utils/BindAccount'))
-const Collections = React.lazy(() => import('./views/utils/Collections'))
-const TermsAndConditions = React.lazy(() => import('./views/TermsAndConditions'))
+// const BindAccount = React.lazy(() => import('./views/utils/BindAccount'))
+// const Collections = React.lazy(() => import('./views/utils/Collections'))
+// const TermsAndConditions = React.lazy(() => import('./views/TermsAndConditions'))
 
 function App () {
   const { authenticate, user, isAuthenticated, isAuthenticating, logout } = useMoralis()
@@ -43,9 +43,10 @@ function App () {
           <Route path='/challenges' element={<Challenges isAuthenticated={isAuthenticated} />} />
           <Route path='/prediction' element={<Prediction user={user} />} />
 
-          <Route path='/collections' element={<Collections isAuthenticated={isAuthenticated} />} />
-          <Route path='/link' element={<BindAccount isAuthenticated={isAuthenticated} />} />
-          <Route path='/terms' element={<TermsAndConditions />} />
+          {/* <Route path='/collections' element={<Collections isAuthenticated={isAuthenticated} />} /> */}
+          {/* <Route path='/link' element={<BindAccount isAuthenticated={isAuthenticated} />} /> */}
+          {/* <Route path='/terms' element={<TermsAndConditions />} /> */}
+          <Route path="*" element={<Home />} />
         </Routes>
       </React.Suspense>
       <Footer />
