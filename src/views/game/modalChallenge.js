@@ -166,7 +166,7 @@ function modalChallenge ({
           await save(challengeBody, {
             onSuccess: async function () {
               // await authenticate({ signingMessage: JSON.stringify(challengeBody) })
-              Swal.fire({
+              MySwal.fire({
                 title:
                   '<a href="https://twitter.com/InTheGameNFT?ref_src=twsrc%5Etfw" class="fa fa-twitter" data-show-count="true">Follow @InTheGameNFT</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>',
                 icon: 'success',

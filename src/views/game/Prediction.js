@@ -48,8 +48,6 @@ const Prediction = ({ user }) => {
         text: "You won't be able to update your submission!",
         icon: 'info',
         showCancelButton: true,
-        confirmButtonColor: '#fee600',
-        cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, submit it!',
         customClass: {
           confirmButton: 'swal2-confirm'
@@ -67,16 +65,18 @@ const Prediction = ({ user }) => {
             {
               onSuccess: async function () {
                 // await authenticate({ signingMessage: JSON.stringify(predictionBody) })
-                Swal.fire({
+                MySwal.fire({
                   title: '<a href="https://twitter.com/InTheGameNFT?ref_src=twsrc%5Etfw" class="fa fa-twitter" data-show-count="true">Follow @InTheGameNFT</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>',
                   icon: 'success',
                   html: '<p>Your selection has been submitted!</p>',
                   showCloseButton: true,
                   focusConfirm: false,
-                  confirmButtonColor: '#fee600',
                   confirmButtonText: '<i class="fa fa-thumbs-up"></i> Great!',
                   confirmButtonAriaLabel: 'Thumbs up, great!',
-                  cancelButtonAriaLabel: 'Thumbs down'
+                  cancelButtonAriaLabel: 'Thumbs down',
+                  customClass: {
+                    confirmButton: 'swal2-confirm'
+                  }
                 })
                 fetch()
               },
@@ -84,7 +84,10 @@ const Prediction = ({ user }) => {
                 MySwal.fire({
                   title: 'Error!',
                   text: error.message,
-                  icon: 'warning'
+                  icon: 'warning',
+                  customClass: {
+                    confirmButton: 'swal2-confirm'
+                  }
                 })
               }
             }
@@ -95,7 +98,10 @@ const Prediction = ({ user }) => {
       MySwal.fire({
         title: 'Notice!',
         text: 'Make sure to put your selection and membership!',
-        icon: 'warning'
+        icon: 'warning',
+        customClass: {
+          confirmButton: 'swal2-confirm'
+        }
       })
     }
   }
