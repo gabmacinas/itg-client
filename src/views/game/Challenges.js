@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { Tabs, Tab, Button } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 import { useMoralis, useMoralisCloudFunction, useNewMoralisObject, useMoralisQuery } from 'react-moralis'
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2/dist/sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import Moment from 'react-moment'
-import Pagination from '../components/Pagination'
 import axios from 'axios'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 const Challenge = ({ user, isAuthenticated }) => {
   const { enableWeb3 } = useMoralis()
@@ -14,14 +14,12 @@ const Challenge = ({ user, isAuthenticated }) => {
   const [onSelected, setOnSelected] = useState([])
   const [isMatchOver, setIsMatchOver] = useState(false)
   const [nftSelected, setNftSelected] = useState(null)
-  const [totalCount, setTotalCount] = useState(0)
-  const [currentPage, setCurrentPage] = useState(1)
   const [collectionsPerPage] = useState(30)
   const [topShotCollected, setTopshotCollected] = useState([])
   const [topShotSelected, setTopshotSelected] = useState([])
-
-  const offset = (currentPage - 1) * collectionsPerPage
-  const paginate = (pageNumber) => setCurrentPage(pageNumber)
+  // const [topShotCount, setTopShotCount] = useState(0)
+  const [currentOffset, setCurrentOffset] = useState(0)
+  const [hasMore, setHasMore] = useState(true)
 
   const pushTopShotSelected = async (nftSelected) => {
     // check if nft is already exists in the array
@@ -38,8 +36,8 @@ const Challenge = ({ user, isAuthenticated }) => {
   }
 
   const getTopShot = async () => {
-    // if (user === null) return false
-    setTopshotCollected([])
+    if (user === null) return false
+
     const topShotUsername = await user.get('username')
 
     const options = {
@@ -49,7 +47,7 @@ const Challenge = ({ user, isAuthenticated }) => {
       data: {
         requestType: 'topshot',
         limit: collectionsPerPage,
-        offset: offset,
+        offset: currentOffset,
         owner: topShotUsername,
         sortDirection: 'DESC'
       }
@@ -63,9 +61,17 @@ const Challenge = ({ user, isAuthenticated }) => {
         try {
           console.log('totalCount', responseBody.totalCount)
           const totalCount = responseBody?.totalCount
-          setTotalCount(totalCount)
           if (totalCount > 0) {
-            setTopshotCollected(responseBody.tokens)
+            if (topShotCollected.length >= totalCount) {
+              // this.setState({ hasMore: false });
+              setHasMore(false)
+              return
+            }
+            // setTopshotCollected(currTokens => currtokeresponseBody.tokens)
+            // concat topShotCollected with new data
+            setTopshotCollected(currTokens => [...currTokens, ...responseBody.tokens])
+            setCurrentOffset(currOffset => currOffset + collectionsPerPage)
+            console.log('currOffset', currentOffset)
           } else {
             MySwal.fire({
               title: 'Oops...',
@@ -78,13 +84,6 @@ const Challenge = ({ user, isAuthenticated }) => {
               denyButtonColor: '#f6851a',
               cancelButtonText: 'Ok'
             }).then((result) => {
-              // if (result.isConfirmed) {
-              //   openInNewTab('https://nbatopshot.com/')
-              // } else if (result.isDenied) {
-              //   navigate('/link')
-              // } else {
-              //   navigate('/')
-              // }
             })
           }
         } catch (error) {
@@ -130,9 +129,10 @@ const Challenge = ({ user, isAuthenticated }) => {
         text: "You won't be able to update your submission!",
         icon: 'info',
         showCancelButton: true,
-        confirmButtonColor: '#fee600',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, submit it!'
+        confirmButtonText: 'Yes, submit it!',
+        customClass: {
+          confirmButton: 'btn btn-primary'
+        }
       }).then(async (result) => {
         if (result.value) {
           // get the name of the topshotSelected and push it in an array
@@ -157,10 +157,13 @@ const Challenge = ({ user, isAuthenticated }) => {
                   html: '<p>Your selection has been submitted!</p>',
                   showCloseButton: true,
                   focusConfirm: false,
-                  confirmButtonColor: '#fee600',
+                  // confirmButtonColor: '#fee600',
                   confirmButtonText: '<i class="fa fa-thumbs-up"></i> Great!',
                   confirmButtonAriaLabel: 'Thumbs up, great!',
-                  cancelButtonAriaLabel: 'Thumbs down'
+                  cancelButtonAriaLabel: 'Thumbs down',
+                  customClass: {
+                    confirmButton: 'btn btn-primary'
+                  }
                 })
                 fetch()
               },
@@ -168,7 +171,10 @@ const Challenge = ({ user, isAuthenticated }) => {
                 MySwal.fire({
                   title: 'Error!',
                   text: error.message,
-                  icon: 'warning'
+                  icon: 'warning',
+                  customClass: {
+                    confirmButton: 'btn btn-primary'
+                  }
                 })
               }
             }
@@ -179,7 +185,10 @@ const Challenge = ({ user, isAuthenticated }) => {
       MySwal.fire({
         title: 'Notice!',
         text: 'Make sure to put your selection and membership!',
-        icon: 'warning'
+        icon: 'warning',
+        customClass: {
+          confirmButton: 'btn btn-primary'
+        }
       })
     }
   }
@@ -346,23 +355,6 @@ const Challenge = ({ user, isAuthenticated }) => {
                         {!isMatchOver && (
                           <div className='p-4'>
                           <input
-                              className='form-control pb-2'
-                              id='txtEnterResult'
-                              name='txtEnterResult'
-                              placeholder='Enter your result'
-                              type='text'
-                              value={onSelected[index]?.selection || ''}
-                              onChange={(event) => {
-                                if (event.target.value.length > 5) return null
-                                const re = /^[0-9\b]+$/
-                                if (event.target.value === '' || re.test(event.target.value)) {
-                                  const clonedData = [...onSelected]
-                                  clonedData[index].selection = event.target.value
-                                  setOnSelected(clonedData)
-                                }
-                              }}
-                            />
-                          <input
                             type='button'
                             id='submit'
                             className='btn btn-light'
@@ -445,7 +437,7 @@ const Challenge = ({ user, isAuthenticated }) => {
                         </div>
                         { dataResult }
                       </th>
-                      <td>{submission?.result}</td>
+                      <td>{submission?.result.join()}</td>
                       <td>{submission?.challenge?.status === 'active' ? 'Open' : 'Finished'}</td>
                       <td>
                         <Moment fromNow>{submission?.createdAt}</Moment>
@@ -458,22 +450,9 @@ const Challenge = ({ user, isAuthenticated }) => {
           </>
             )}
           </div>
-          <div className='row'>
-              {topShotCollected.map((nft, index) => (
-                <div key={index} className='d-item col-lg-2 col-md-6 col-sm-6 col-xs-12' onClick={() => pushTopShotSelected(nft)}>
-                  <div className='nft__item'>
-                    <div className='nft__item_info'>
-                      <span>
-                        <h4>{nft.title}</h4>
-                      </span>
-                      <div className='nft__item_price pb-3'>{nft.description}</div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            {totalCount > 30 && <Pagination collectionsPerPage={collectionsPerPage} totalCollections={totalCount} currentPage={currentPage} paginate={paginate} />}
-            {topShotSelected.map((nft, index) => (
+          <div className="row">
+            {/* selected topshot */}
+          {topShotSelected.map((nft, index) => (
                 <div key={index} className='d-item col-lg-2 col-md-6 col-sm-6 col-xs-12' onClick={() => removeTopShotSelected(nft)}>
                   <div className='nft__item'>
                     <div className='nft__item_info'>
@@ -484,7 +463,30 @@ const Challenge = ({ user, isAuthenticated }) => {
                     </div>
                   </div>
                 </div>
-            ))}
+          ))}
+          </div>
+            <div className="container-fluid">
+              <InfiniteScroll
+                dataLength={topShotCollected.length}
+                next={getTopShot}
+                hasMore={hasMore}
+                loader={<h4>Loading...</h4>}
+                className='row'
+              >
+                {topShotCollected.map((nft, index) => (
+                  <div key={index} className='d-item col-lg-2 col-md-6 col-sm-6 col-xs-12' onClick={() => pushTopShotSelected(nft)}>
+                    <div className='nft__item'>
+                      <div className='nft__item_info'>
+                        <span>
+                          <h4>{nft.title}</h4>
+                        </span>
+                        <div className='nft__item_price pb-3'>{nft.description}</div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </InfiniteScroll>
+            </div>
           </div>
       </div>
           </>

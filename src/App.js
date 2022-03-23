@@ -1,4 +1,5 @@
 import React from 'react'
+import '@sweetalert2/theme-dark/dark.css'
 import './styles/App.css'
 import './styles/App.scss'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'

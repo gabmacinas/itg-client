@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Tabs, Tab, Button } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 import { useMoralis, useMoralisCloudFunction, useNewMoralisObject } from 'react-moralis'
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2/dist/sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import Moment from 'react-moment'
 

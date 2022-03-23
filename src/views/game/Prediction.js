@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Tabs, Tab, Button } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 import { useMoralis, useMoralisCloudFunction, useNewMoralisObject, useMoralisQuery } from 'react-moralis'
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2/dist/sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import Moment from 'react-moment'
 
@@ -50,7 +50,10 @@ const Prediction = ({ user }) => {
         showCancelButton: true,
         confirmButtonColor: '#fee600',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, submit it!'
+        confirmButtonText: 'Yes, submit it!',
+        customClass: {
+          confirmButton: 'swal2-confirm'
+        }
       }).then(async (result) => {
         if (result.value) {
           const predictionBody = {

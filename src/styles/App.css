@@ -123,6 +123,9 @@
   .icon:hover { color: var(--dark); opacity: 0.41; transition: 400ms; }
   
   .social-icons:hover {background: rgba(255,255,255,0.4); transition: 400ms;}
+
+  /** sweetalert buttons **/
+.swal2-confirm-custom  { background-color: var(--primary); color: black; }
   
   @media (min-width:768px) {
     #sub-head {color: var(--dark); font-size: 31px; padding-top: 10px; padding-bottom: 12px; line-height: 54px; }

@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
+// import '@sweetalert2/theme-dark/dark.css'
 import { MoralisProvider } from 'react-moralis'
 import App from './App'
 
