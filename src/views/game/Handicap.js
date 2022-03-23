@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Tabs, Tab, Button } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 import { useMoralis, useMoralisCloudFunction, useNewMoralisObject } from 'react-moralis'
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2/dist/sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import Moment from 'react-moment'
 
@@ -45,7 +45,6 @@ const Handicap = ({ user }) => {
         icon: 'info',
         showCancelButton: true,
         confirmButtonColor: '#fee600',
-        cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, submit it!'
       }).then(async (result) => {
         if (result.value) {
@@ -68,7 +67,7 @@ const Handicap = ({ user }) => {
           await save(handicapBody, {
             onSuccess: async function () {
               // await authenticate({ signingMessage: JSON.stringify(handicapBody) })
-              Swal.fire({
+              MySwal.fire({
                 title:
                   '<a href="https://twitter.com/InTheGameNFT?ref_src=twsrc%5Etfw" class="fa fa-twitter" data-show-count="true">Follow @InTheGameNFT</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>',
                 icon: 'success',

@@ -47,6 +47,9 @@
   .btn-check:active + .btn-primary:focus, .btn-check:checked + .btn-primary:focus, .btn-primary.active:focus, .btn-primary:active:focus, .show > .btn-primary.dropdown-toggle:focus {box-shadow: 0 0 0 .25rem var(--opac-dark); background: var(--primary);}
   .btn-check:active + .btn-primary, .btn-check:checked + .btn-primary, .btn-primary.active, .btn-primary:active  .show > .btn-primary.dropdown-toggle {color: var(--white); border-color: transparent; background: var(--primary); }
   
+
+  .btn-swal, .btn-swal:hover, .btn-swal:checked, .btn-swal:focus { background: var(--primary) !important; color: var(--dark) !important }
+
   #logo-hero { width: 400px; }
   .intro-head { color: var(--dark); }
   #hero-left { color: var(--dark); }
@@ -123,6 +126,9 @@
   .icon:hover { color: var(--dark); opacity: 0.41; transition: 400ms; }
   
   .social-icons:hover {background: rgba(255,255,255,0.4); transition: 400ms;}
+
+  /** sweetalert buttons **/
+.swal2-confirm-custom  { background-color: var(--primary); color: black; }
   
   @media (min-width:768px) {
     #sub-head {color: var(--dark); font-size: 31px; padding-top: 10px; padding-bottom: 12px; line-height: 54px; }
