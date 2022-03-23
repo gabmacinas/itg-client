@@ -133,7 +133,11 @@ function modalChallenge ({
     console.log('on selected before submit', onSelected[index])
     if (topShotSelected.length === 0) hasEmptySubmission = true
     console.log('hasEmptySubs', hasEmptySubmission)
-    if (!hasEmptySubmission && nftSelected !== null && Number(challenge.attributes.momentQty) === Number(topShotSelected.length)) {
+    if (
+      !hasEmptySubmission &&
+      nftSelected !== null &&
+      Number(challenge.attributes.momentQty) === Number(topShotSelected.length)
+    ) {
       enableWeb3()
       MySwal.fire({
         title: 'Are you sure?',
@@ -241,16 +245,14 @@ function modalChallenge ({
               <h4 className='h4 lh-base p-5 text-center text-light'>Pick Membership</h4>
             </div>
             <div className='col-md-12'>
-              <div id='zero2' className='onStep fadeIn'>
-                <div className='row'>
-                  {inTheGameNfts?.map((nft, index) => {
-                    return (
-                      <div key={index} className='col-lg-2 col-md-4' onClick={() => setNftSelected(nft)}>
-                        <p className='nft__item'>{'#' + nft.token_id + ' Membership'}</p>
-                      </div>
-                    )
-                  })}
-                </div>
+              <div className='row'>
+                {inTheGameNfts?.map((nft, index) => {
+                  return (
+                    <div key={index} className='col-lg-2 col-md-4' onClick={() => setNftSelected(nft)}>
+                      <p className='nft__item'>{'#' + nft.token_id + ' Membership'}</p>
+                    </div>
+                  )
+                })}
               </div>
               <div className='col-lg-12'>
                 <h5 className='h5 lh-base p-5 text-center'>
@@ -259,13 +261,13 @@ function modalChallenge ({
               </div>
             </div>
             <div className='col-lg-12 text-center'>
-                <Button
-                  variant='btn btn-light'
-                  onClick={() => !isMatchOver && submitBetting(index, challenge)}
-                  disabled={isMatchOver}
-                >
-                  Submit
-                </Button>
+              <Button
+                variant='btn btn-light'
+                onClick={() => !isMatchOver && submitBetting(index, challenge)}
+                disabled={isMatchOver}
+              >
+                Submit
+              </Button>
             </div>
             <div className='col-md-12'>
               <div className='row'>
