@@ -26,22 +26,13 @@ const Challenge = ({ user, isAuthenticated }) => {
   useEffect(() => {
     if (challenges.length > 0) {
       challenges?.map(async (challenge, index) => {
-        return await challenge
-          .relation('challengeMatches')
-          .query()
-          .ascending('createdAt')
-          .ascending('matchDate')
-          .find()
-          .then(() => {
-            const now = new Date()
-            const matchDate = new Date(challenge.attributes.matchDate)
-            const diff = matchDate.getTime() - now.getTime()
-            const diffMinutes = Math.ceil(diff / (1000 * 60))
-            if (diffMinutes <= 15) {
-              setIsMatchOver(true)
-            }
-            setOnSelected((onSelected) => [...onSelected, { selection: '' }])
-          })
+        const now = new Date()
+        const matchDate = new Date(challenge.attributes.matchDate)
+        const diff = matchDate.getTime() - now.getTime()
+        const diffMinutes = Math.ceil(diff / (1000 * 60))
+        if (diffMinutes <= 15) {
+          setIsMatchOver(true)
+        }
       })
     }
   }, [challenges])
