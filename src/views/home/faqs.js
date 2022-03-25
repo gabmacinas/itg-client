@@ -58,7 +58,7 @@ const Faqs = () => {
                   <div className='text-center card-inner'>
                     <h4 className='card-header'>I have only ever bought Top Shot Moments; how do I buy In the Game?</h4>
                     <p>
-                      You can mint <a href='https://in-the-game-client-staging.herokuapp.com/'>here</a>.
+                      You can mint above the page.
                     </p>
                   </div>
                 </div>
