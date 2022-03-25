@@ -58,7 +58,7 @@ function BindAccount () {
             text: 'Account has been successfully linked',
             icon: 'success',
             customClass: {
-              confirmButton: 'swal2-confirm'
+              confirmButton: 'btn btn-swal'
             }
           }).then(() => {
             navigate('/collections')

@@ -50,7 +50,7 @@ const Prediction = ({ user }) => {
         showCancelButton: true,
         confirmButtonText: 'Yes, submit it!',
         customClass: {
-          confirmButton: 'swal2-confirm'
+          confirmButton: 'btn btn-swal'
         }
       }).then(async (result) => {
         if (result.value) {
@@ -75,7 +75,7 @@ const Prediction = ({ user }) => {
                   confirmButtonAriaLabel: 'Thumbs up, great!',
                   cancelButtonAriaLabel: 'Thumbs down',
                   customClass: {
-                    confirmButton: 'swal2-confirm'
+                    confirmButton: 'btn btn-swal'
                   }
                 })
                 fetch()
@@ -86,7 +86,7 @@ const Prediction = ({ user }) => {
                   text: error.message,
                   icon: 'warning',
                   customClass: {
-                    confirmButton: 'swal2-confirm'
+                    confirmButton: 'btn btn-swal'
                   }
                 })
               }
@@ -100,7 +100,7 @@ const Prediction = ({ user }) => {
         text: 'Make sure to put your selection and membership!',
         icon: 'warning',
         customClass: {
-          confirmButton: 'swal2-confirm'
+          confirmButton: 'btn btn-swal'
         }
       })
     }

@@ -44,8 +44,10 @@ const Handicap = ({ user }) => {
         text: "You won't be able to update your submission!",
         icon: 'info',
         showCancelButton: true,
-        confirmButtonColor: '#fee600',
-        confirmButtonText: 'Yes, submit it!'
+        confirmButtonText: 'Yes, submit it!',
+        customClass: {
+          confirmButton: 'btn btn-swal'
+        }
       }).then(async (result) => {
         if (result.value) {
           let stringResult = ''
@@ -74,17 +76,22 @@ const Handicap = ({ user }) => {
                 html: '<p>Your selection has been submitted!</p>',
                 showCloseButton: true,
                 focusConfirm: false,
-                confirmButtonColor: '#fee600',
                 confirmButtonText: '<i class="fa fa-thumbs-up"></i> Great!',
                 confirmButtonAriaLabel: 'Thumbs up, great!',
-                cancelButtonAriaLabel: 'Thumbs down'
+                cancelButtonAriaLabel: 'Thumbs down',
+                customClass: {
+                  confirmButton: 'btn btn-swal'
+                }
               })
             },
             onError: function (error) {
               MySwal.fire({
                 title: 'Error!',
                 text: error.message,
-                icon: 'warning'
+                icon: 'warning',
+                customClass: {
+                  confirmButton: 'btn btn-swal'
+                }
               })
             }
           })
@@ -95,7 +102,9 @@ const Handicap = ({ user }) => {
         title: 'Notice!',
         text: 'Make sure to select all matches and membership',
         icon: 'warning',
-        confirmButtonColor: '#fee600'
+        customClass: {
+          confirmButton: 'btn btn-swal'
+        }
       })
     }
   }
