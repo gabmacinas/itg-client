@@ -238,6 +238,7 @@ const Challenge = ({ user, isAuthenticated }) => {
                   </thead>
                   <tbody>
                     {challengeSubmissions?.map((submission, index) => {
+                      console.log(submission)
                       let dataResult = ''
                       let iconResult = 'fa fa-clock'
                       if (

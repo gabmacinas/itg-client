@@ -293,12 +293,13 @@ function modalChallenge ({
               <h4 className='h4 lh-base p-5 text-center text-light'>Select moments below</h4>
             </div>
           </div>
-          <div id='scrollableDiv' className='container-fluid' style={{ height: '50vh', overflow: 'auto' }}>
+          <div id='scrollableDiv' className='container-fluid' >
             <InfiniteScroll
               dataLength={topShotCollected.length}
               next={getTopShot}
               hasMore={hasMore}
               loader={<h4>Loading...</h4>}
+              height={600}
               className='row'
               scrollableTarget='scrollableDiv'
             >
