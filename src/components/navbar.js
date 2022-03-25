@@ -29,8 +29,8 @@ const navbar = ({ authenticate, user, isAuthenticated, isAuthenticating, logout 
             <Nav.Link className='navbar-item' href='/collections'>
               Collections
             </Nav.Link>
-            <Nav.Link className='navbar-item' href='/winners'>
-              Winners
+            <Nav.Link className='navbar-item' href='/link'>
+              Link
             </Nav.Link>
             <Nav.Link className='navbar-item' href='/about'>
               About
