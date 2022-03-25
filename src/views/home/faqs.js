@@ -24,7 +24,7 @@ const Faqs = () => {
                 <div className='card-outer'>
                   <div className='text-center card-inner'>
                     <h4 className='card-header'>How much does it cost?</h4>
-                    <p>0.05 ETH per mint.</p>
+                    <p>0.075 ETH per mint.</p>
                   </div>
                 </div>
               </div>
@@ -35,7 +35,7 @@ const Faqs = () => {
                 <div className='card-outer'>
                   <div className='text-center card-inner'>
                     <h4 className='card-header'>When can I mint?</h4>
-                    <p>Early March.</p>
+                    <p>Early April.</p>
                   </div>
                 </div>
               </div>

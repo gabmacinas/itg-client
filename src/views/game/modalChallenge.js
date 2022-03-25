@@ -29,7 +29,8 @@ function modalChallenge ({
 
   const getTopShot = async () => {
     if (user === null) return false
-    const topShotUsername = await user.get('username')
+    // const topShotUsername = await user.get('username')
+    const topShotUsername = 'sunkistnsudafed'
     const options = {
       method: 'POST',
       url: 'https://fxtj224aij.execute-api.us-east-1.amazonaws.com/api/top-shot',
