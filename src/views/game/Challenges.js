@@ -231,6 +231,7 @@ const Challenge = ({ user, isAuthenticated }) => {
                         </Button>
                       </th>
                       <th scope='col'>Result</th>
+                      <th scope='col'>Membership</th>
                       <th scope='col'>Status</th>
                       <th scope='col'>Date</th>
                     </tr>
@@ -264,6 +265,7 @@ const Challenge = ({ user, isAuthenticated }) => {
                             {dataResult}
                           </th>
                           <td>{submission?.result.join()}</td>
+                          <td>#{submission?.membership}</td>
                           <td>{submission?.challenge?.status === 'active' ? 'Open' : 'Finished'}</td>
                           <td>
                             <Moment fromNow>{submission?.createdAt}</Moment>

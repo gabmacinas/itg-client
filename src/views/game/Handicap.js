@@ -315,6 +315,7 @@ const Handicap = ({ user }) => {
                     }}
                   ><i className="fa fa-spinner"></i> Refresh</Button></th>
                   <th scope='col'>Result</th>
+                  <th scope='col'>Membership</th>
                   <th scope='col'>Status</th>
                   <th scope='col'>Date</th>
                 </tr>
@@ -343,6 +344,7 @@ const Handicap = ({ user }) => {
                         { dataResult }
                       </th>
                       <td>{submission?.result}</td>
+                      <td>#{submission?.membership}</td>
                       <td>{submission?.handicap?.status === 'active' ? 'Open' : 'Finished'}</td>
                       <td>
                         <Moment fromNow>{submission?.createdAt}</Moment>
