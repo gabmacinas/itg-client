@@ -71,32 +71,69 @@ const Intro = ({
                   </>
                         )
                       : (
-                        <h3 className='fw-bold' id='sub-head'>Mint Closed</h3>
+                  <h3 className='fw-bold' id='sub-head'>
+                    Mint Closed
+                  </h3>
                         )
                   )
                 : (
                 <>
-                  <span className='inline lead'>
-                    <input
-                      className='form-mint '
-                      id='txtMintQty'
-                      name='txtMintQty'
-                      placeholder='Qty'
-                      type='text'
-                      value={mintQty}
-                      onChange={(event) => {
-                        if (event.target.value.length > maxMintQty.length) return null
-                        const re = /^[0-9\b]+$/
-                        if (event.target.value === '' || re.test(event.target.value)) {
-                          if (event.target.value > maxMintQty) return setMintQty(maxMintQty)
-                          setMintQty(event.target.value)
-                        }
-                      }}
-                    />
-                  </span>
-                  <span onClick={() => mint()} className='btn btn-primary'>
-                    {isMinting ? 'Minting...' : 'Mint Now'}
-                  </span>
+                  <div className='form form-inline'>
+                    <div className='row'>
+                      <div className='col-lg-2'>
+                        <input
+                          className='form-control'
+                          id='txtMintQty'
+                          name='txtMintQty'
+                          placeholder='Qty'
+                          type='number'
+                          value={mintQty}
+                          onChange={(event) => {
+                            if (event.target.value.length > maxMintQty.length) return null
+                            const re = /^[0-9\b]+$/
+                            if (event.target.value === '' || re.test(event.target.value)) {
+                              if (event.target.value > maxMintQty) return setMintQty(maxMintQty)
+                              setMintQty(event.target.value)
+                            }
+                          }}
+                        />
+                      </div>
+                      <div className='col-lg-10'>
+                        <button onClick={() => mint()} className='btn btn-primary'>
+                          {isMinting ? 'Minting...' : 'Mint Now'}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className='row pt-4'>
+                    <div className='spacer-single'></div>
+                    <div className='row'>
+                      <div className='col-lg-4 col-md-6 col-sm-4 mb30'>
+                        <div className='de_count text-left'>
+                          <h3>
+                            <span className='col-white'>{totalMint || 0}</span>
+                          </h3>
+                          <h5 style={{ color: '#FEE603' }}>Total Minted</h5>
+                        </div>
+                      </div>
+                      <div className='col-lg-4 col-md-6 col-sm-4 mb30'>
+                        <div className='de_count text-left'>
+                          <h3>
+                            <span className='col-white'>{maxSupply || 0}</span>
+                          </h3>
+                          <h5 style={{ color: '#FEE603' }} className='col-white'>Total Supply</h5>
+                        </div>
+                      </div>
+                      <div className='col-lg-4 col-md-6 col-sm-4 mb30'>
+                        <div className='de_count text-left'>
+                          <h3>
+                            <span className='col-white'>{balanceOf || 0}</span>
+                          </h3>
+                          <h5 style={{ color: '#FEE603' }} className='col-white'>Owned</h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </>
                   )}
             </div>

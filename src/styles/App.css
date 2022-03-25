@@ -127,6 +127,8 @@
   
   .social-icons:hover {background: rgba(255,255,255,0.4); transition: 400ms;}
 
+  .text-white { color: var(--primary) }
+
   /** sweetalert buttons **/
 .swal2-confirm-custom  { background-color: var(--primary); color: black; }
   
