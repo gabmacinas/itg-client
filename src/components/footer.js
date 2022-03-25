@@ -9,13 +9,13 @@ export default function footer () {
               <h3 className='footer-head'>About</h3>
               <ul>
                 <li>
-                  <a href='#'>Company</a>
+                  <a href='#'>About</a>
                 </li>
                 <li>
                   <a href='#'>Team</a>
                 </li>
                 <li>
-                  <a href='#'>Careers</a>
+                  <a href='#'>Terms And Conditions</a>
                 </li>
               </ul>
             </div>
@@ -32,7 +32,7 @@ export default function footer () {
               <a className='social-icons' href='#'>
                 <i className='icon ion-social-facebook'></i>
               </a>
-              <a className='social-icons' href='#'>
+              <a className='social-icons' href='https://twitter.com/InTheGameNFT'>
                 <i className='icon ion-social-twitter'></i>
               </a>
               <a className='social-icons' href='#'>

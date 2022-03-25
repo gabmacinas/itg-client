@@ -70,7 +70,10 @@ function modalChallenge ({
               showCancelButton: true,
               showDenyButton: true,
               denyButtonColor: '#f6851a',
-              cancelButtonText: 'Ok'
+              cancelButtonText: 'Ok',
+              customClass: {
+                confirmButton: 'btn btn-swal'
+              }
             }).then((result) => {})
           }
         } catch (error) {
@@ -147,7 +150,7 @@ function modalChallenge ({
         confirmButtonText: 'Yes, submit it!',
         confirmButtonColor: '#FEE603',
         customClass: {
-          confirmButton: 'btn btn-primary'
+          confirmButton: 'btn btn-swal'
         }
       }).then(async (result) => {
         if (result.value) {
@@ -178,7 +181,7 @@ function modalChallenge ({
                 confirmButtonAriaLabel: 'Thumbs up, great!',
                 cancelButtonAriaLabel: 'Thumbs down',
                 customClass: {
-                  confirmButton: 'btn btn-primary'
+                  confirmButton: 'btn btn-swal'
                 }
               })
               fetch()
@@ -190,7 +193,7 @@ function modalChallenge ({
                 text: error.message,
                 icon: 'warning',
                 customClass: {
-                  confirmButton: 'btn btn-primary'
+                  confirmButton: 'btn btn-swal'
                 }
               })
             }
@@ -203,7 +206,7 @@ function modalChallenge ({
         text: 'Make sure to put your selection and membership!',
         icon: 'warning',
         customClass: {
-          confirmButton: 'btn-swal'
+          confirmButton: 'btn btn-swal'
         }
       })
     }
@@ -293,12 +296,13 @@ function modalChallenge ({
               <h4 className='h4 lh-base p-5 text-center text-light'>Select moments below</h4>
             </div>
           </div>
-          <div id='scrollableDiv' className='container-fluid' style={{ height: '50vh', overflow: 'auto' }}>
+          <div id='scrollableDiv' className='container-fluid' >
             <InfiniteScroll
               dataLength={topShotCollected.length}
               next={getTopShot}
               hasMore={hasMore}
               loader={<h4>Loading...</h4>}
+              height={600}
               className='row'
               scrollableTarget='scrollableDiv'
             >
