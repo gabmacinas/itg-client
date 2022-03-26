@@ -232,7 +232,7 @@ const Handicap = ({ user }) => {
                             return (
                               <div className='col-md-6' key={matchIndex}>
                                 <div className='game'>
-                                  <h3 className='h4'>{game.team1} vs {game.team2}</h3>
+                                  <h3 className='h4'>{game.team1} @ {game.team2}</h3>
                                     <Tabs
                                       fill
                                       className='my-nav-tabs nav nav-tabs'
