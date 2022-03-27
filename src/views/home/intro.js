@@ -40,13 +40,12 @@ const Intro = ({
                 exclusive access to daily Top Shot challenges, rewarding collectors with cash, NFTs and high-end Top
                 Shot moments.
               </p>
-              {/* <button className='btn btn-primary' type='button'>
-                View Collections
-              </button> */}
-              {isMintPaused
-                ? (
-                    isWhitelistEnabled && isUserWhitelisted
-                      ? (
+              {isAuthenticated && (
+                <>
+                {isMintPaused
+                  ? (
+                      isWhitelistEnabled && isUserWhitelisted
+                        ? (
                   <>
                     <span className='inline lead'>
                       <input
@@ -69,14 +68,14 @@ const Intro = ({
                       {isMinting ? 'Minting...' : 'Eligible for Exclusive Pass: Mint Now!'}
                     </span>
                   </>
-                        )
-                      : (
+                          )
+                        : (
                   <h3 className='fw-bold' id='sub-head'>
                     Mint Closed
                   </h3>
-                        )
-                  )
-                : (
+                          )
+                    )
+                  : (
                 <>
                   <div className='form form-inline'>
                     <div className='row'>
@@ -135,7 +134,9 @@ const Intro = ({
                     </div>
                   </div>
                 </>
-                  )}
+                    )}
+                </>
+              )}
             </div>
             <div className='col-md-6 d-flex justify-content-center grow' id='hero-right'>
               <img className='animated img-fluid pulse' id='logo-hero' src='assets/img/logo-lg.png' alt='In The Game' />

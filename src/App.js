@@ -168,7 +168,7 @@ function App () {
   }, [])
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && isWeb3Enabled) {
       getContractInformation()
     }
   }, [isWeb3Enabled, isAuthenticated])
