@@ -106,8 +106,8 @@ a:hover {color: var(--opac-light);}
 .game-choice {justify-content: center; }
 .game-detail {display: flex; flex-wrap: wrap; justify-content: center; background-color: var(--opac-light); padding: 1.5em; column-gap: 1em; }
 
-.ntf_mem {}
-.nft__item {text-align: center; background-color: var(--opac-light); padding: 14px; border-radius: 3px; transition: 400ms; min-height: 5em; align-self: center; }
+.ntf_mem {min-height: 100px;  }
+.nft__item {text-align: center; background-color: var(--opac-light); border-radius: 3px; transition: 400ms;   padding: 30px 10px;}
 .nft__item:hover {background-color: var(--opac-lighter); transition: 300ms;}
 .nft__item_info {min-height: 150px; }
 

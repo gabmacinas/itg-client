@@ -248,8 +248,8 @@ function modalChallenge ({
               <div className='row'>
                 {inTheGameNfts?.map((nft, index) => {
                   return (
-                    <div key={index} className='col-lg-2 col-md-4 ntf_mem m-1' onClick={() => setNftSelected(nft)}>
-                      <p className='nft__item align-middle'>{'#' + nft.token_id + ' Membership'}</p>
+                    <div key={index} className='col-lg-2 col-md-4 ntf_mem' onClick={() => setNftSelected(nft)}>
+                      <p className='nft__item'>{'#' + nft.token_id + ' Membership'}</p>
                     </div>
                   )
                 })}
