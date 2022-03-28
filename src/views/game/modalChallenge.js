@@ -70,10 +70,7 @@ function modalChallenge ({
               showCancelButton: true,
               showDenyButton: true,
               denyButtonColor: '#f6851a',
-              cancelButtonText: 'Ok',
-              customClass: {
-                confirmButton: 'btn btn-swal'
-              }
+              cancelButtonText: 'Ok'
             }).then((result) => {})
           }
         } catch (error) {
@@ -150,7 +147,7 @@ function modalChallenge ({
         confirmButtonText: 'Yes, submit it!',
         confirmButtonColor: '#FEE603',
         customClass: {
-          confirmButton: 'btn btn-swal'
+          confirmButton: 'btn btn-primary'
         }
       }).then(async (result) => {
         if (result.value) {
@@ -181,7 +178,7 @@ function modalChallenge ({
                 confirmButtonAriaLabel: 'Thumbs up, great!',
                 cancelButtonAriaLabel: 'Thumbs down',
                 customClass: {
-                  confirmButton: 'btn btn-swal'
+                  confirmButton: 'btn btn-primary'
                 }
               })
               fetch()
@@ -193,7 +190,7 @@ function modalChallenge ({
                 text: error.message,
                 icon: 'warning',
                 customClass: {
-                  confirmButton: 'btn btn-swal'
+                  confirmButton: 'btn btn-primary'
                 }
               })
             }
@@ -206,7 +203,7 @@ function modalChallenge ({
         text: 'Make sure to put your selection and membership!',
         icon: 'warning',
         customClass: {
-          confirmButton: 'btn btn-swal'
+          confirmButton: 'btn-swal'
         }
       })
     }
@@ -251,8 +248,8 @@ function modalChallenge ({
               <div className='row'>
                 {inTheGameNfts?.map((nft, index) => {
                   return (
-                    <div key={index} className='col-lg-2 col-md-4' onClick={() => setNftSelected(nft)}>
-                      <p className='nft__item'>{'#' + nft.token_id + ' Membership'}</p>
+                    <div key={index} className='col-lg-2 col-md-4 ntf_mem m-1' onClick={() => setNftSelected(nft)}>
+                      <p className='nft__item align-middle'>{'#' + nft.token_id + ' Membership'}</p>
                     </div>
                   )
                 })}
@@ -277,13 +274,13 @@ function modalChallenge ({
                 {topShotSelected.map((nft, index) => (
                   <div
                     key={index}
-                    className='d-item col-lg-2 col-md-6 col-sm-6 col-xs-12'
+                    className='d-item col-lg-2 col-md-4 col-sm-6 col-xs-12'
                     onClick={() => removeTopShotSelected(nft)}
                   >
                     <div className='nft__item'>
                       <div className='nft__item_info'>
                         <span>
-                          <h4>{nft.title}</h4>
+                          <h5>{nft.title}</h5>
                         </span>
                         <div className='nft__item_price pb-3'>{nft.description}</div>
                       </div>
@@ -296,13 +293,12 @@ function modalChallenge ({
               <h4 className='h4 lh-base p-5 text-center text-light'>Select moments below</h4>
             </div>
           </div>
-          <div id='scrollableDiv' className='container-fluid' >
+          <div id='scrollableDiv' className='container-fluid' style={{ height: '50vh', overflow: 'auto' }}>
             <InfiniteScroll
               dataLength={topShotCollected.length}
               next={getTopShot}
               hasMore={hasMore}
               loader={<h4>Loading...</h4>}
-              height={600}
               className='row'
               scrollableTarget='scrollableDiv'
             >
