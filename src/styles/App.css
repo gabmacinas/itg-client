@@ -74,8 +74,11 @@ a:hover {color: var(--opac-light);}
 
 #main-heading {font-size: 61.88px; }
 .faq-section {background: var(--dark);}
-
-.modal-title, .modal-content {color: var(--dark);}
+.modal-header .btn-close {color: var(--white) !important;}
+.modal-header, .modal-footer {border: none;}
+.modal-content {border: solid 3px var(--primary); border-radius: 20px; padding: 20px;}
+.modal-content, .modal-body {background: var(--dark) !important;}
+.list-group-item  {background: var(--dark); color: white; border: none; padding: 10px 0;}
 
 /** NAVIGATION **/
 
