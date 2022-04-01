@@ -340,7 +340,6 @@ const Handicap = ({ user }) => {
                   } else if (submission?.result !== '' && submission?.handicap?.status === 'active') {
                     dataResult = 'Pending'
                   } else {
-                    dataResult = 'LOSE'
                     iconResult = 'fa fa-times'
                   }
                   return (

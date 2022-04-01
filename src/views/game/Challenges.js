@@ -54,7 +54,7 @@ const Challenge = ({ user, isAuthenticated }) => {
 
   return (
     <>
-      <div className='text-white'>
+      <div>
         <div
           className='pt-5'
           data-bss-parallax-bg='true'
@@ -84,7 +84,7 @@ const Challenge = ({ user, isAuthenticated }) => {
                                 <hr className='border-secondary mb-0 mt-0' />
                               </div>
                               <div className='col-auto'>
-                                <h2 className='fw-bold h4 mb-0 text-uppercase' style={{ color: '#fee600' }}>
+                                <h2 className='fw-bold h4 mb-0 text-uppercase'>
                                   {challenge.attributes.title}
                                 </h2>
                               </div>
@@ -104,7 +104,8 @@ const Challenge = ({ user, isAuthenticated }) => {
                           <div className='container text-center'>
                             <div className='accent game-row'>
                               <div className='proportions-box-square'>
-                                <div className='align-items-center border-width-3 d-flex flex-column justify-content-center proportions-box-content rounded-3 shadow text-dark'></div>
+                                <div className='align-items-center d-flex flex-column justify-content-center proportions-box-content rounded-3 shadow text-dark'>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -116,10 +117,10 @@ const Challenge = ({ user, isAuthenticated }) => {
                           <div className='game-row row'>
                             {challenge.matches?.map((game, matchIndex) => {
                               return (
-                                <div className='col-md-6' key={matchIndex}>
+                                <div className='col-lg-6 col-md-4' key={matchIndex}>
                                   <div className='game'>
                                     <h3 className='h4'>
-                                      {game.team1} @ {game.team2}
+                                      {game.team1} vs {game.team2}
                                     </h3>
                                     <Tabs
                                       fill
@@ -231,7 +232,6 @@ const Challenge = ({ user, isAuthenticated }) => {
                         </Button>
                       </th>
                       <th scope='col'>Result</th>
-                      <th scope='col'>Membership</th>
                       <th scope='col'>Status</th>
                       <th scope='col'>Date</th>
                     </tr>
@@ -239,7 +239,6 @@ const Challenge = ({ user, isAuthenticated }) => {
                   </thead>
                   <tbody>
                     {challengeSubmissions?.map((submission, index) => {
-                      console.log(submission)
                       let dataResult = ''
                       let iconResult = 'fa fa-clock'
                       if (
@@ -265,7 +264,6 @@ const Challenge = ({ user, isAuthenticated }) => {
                             {dataResult}
                           </th>
                           <td>{submission?.result.join()}</td>
-                          <td>#{submission?.membership}</td>
                           <td>{submission?.challenge?.status === 'active' ? 'Open' : 'Finished'}</td>
                           <td>
                             <Moment fromNow>{submission?.createdAt}</Moment>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import InfiniteScroll from 'react-infinite-scroll-component'
+// import InfiniteScroll from 'react-infinite-scroll-component'
 import { Modal, Button } from 'react-bootstrap'
 import axios from 'axios'
 import Swal from 'sweetalert2/dist/sweetalert2'
@@ -22,69 +22,15 @@ function modalChallenge ({
   const MySwal = withReactContent(Swal)
   const [topShotSelected, setTopshotSelected] = useState([])
   const [nftSelected, setNftSelected] = useState(null)
-  const [hasMore, setHasMore] = useState(true)
-  const [topShotCollected, setTopshotCollected] = useState([])
-  const [currentOffset, setCurrentOffset] = useState(0)
-  const [collectionsPerPage] = useState(30)
 
-  const getTopShot = async () => {
-    if (user === null) return false
-    const topShotUsername = await user.get('username')
-    const options = {
-      method: 'POST',
-      url: 'https://fxtj224aij.execute-api.us-east-1.amazonaws.com/api/top-shot',
-      headers: { 'Content-Type': 'application/json' },
-      data: {
-        requestType: 'topshot',
-        limit: collectionsPerPage,
-        offset: currentOffset,
-        owner: topShotUsername,
-        sortDirection: 'DESC'
-      }
+  const { data: challengeMoments, fetch: fetchMoments } = useMoralisCloudFunction(
+    'getUserChallengeMoments',
+    { id: challenge.id, username: user.attributes.username },
+    [challenge, user],
+    {
+      autoFetch: false
     }
-
-    axios
-      .request(options)
-      .then((data) => {
-        console.log('data', data)
-        const responseBody = data.data.body.data.getTokensPublic
-        console.log('responseBody', responseBody)
-        try {
-          console.log('totalCount', responseBody.totalCount)
-          const totalCount = responseBody?.totalCount
-          if (totalCount > 0) {
-            if (topShotCollected.length >= totalCount) {
-              setHasMore(false)
-              return
-            }
-            setTopshotCollected((currTokens) => [...currTokens, ...responseBody.tokens])
-            setCurrentOffset((currOffset) => currOffset + collectionsPerPage)
-            console.log('currOffset', currentOffset)
-          } else {
-            MySwal.fire({
-              title: 'Oops...',
-              text: 'You have not collected any TopShot yet!. Please collect some TopShot to continue.',
-              icon: 'info',
-              confirmButtonText: 'Go to TopShot',
-              denyButtonText: 'Link TopShot Account',
-              showCancelButton: true,
-              showDenyButton: true,
-              denyButtonColor: '#f6851a',
-              cancelButtonText: 'Ok',
-              customClass: {
-                confirmButton: 'btn btn-swal'
-              }
-            }).then((result) => {})
-          }
-        } catch (error) {
-          // navigate('/link')
-          console.log('error', error)
-        }
-      })
-      .catch((err) => {
-        console.log('error', err)
-      })
-  }
+  )
 
   const { data: inTheGameNfts, fetch: getItgNfts } = useMoralisCloudFunction(
     'getItgNfts',
@@ -105,6 +51,57 @@ function modalChallenge ({
     }
   )
 
+  const refreshMoments = async () => {
+    if (user === null) return false
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-right',
+      iconColor: 'white',
+      customClass: {
+        popup: 'colored-toast'
+      },
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true
+    })
+    Toast.fire({
+      icon: 'info',
+      title: 'Refreshing moments. It might take a while.'
+    })
+
+    const options = {
+      method: 'POST',
+      url: process.env.REACT_APP_TOPSHOT_API,
+      headers: { 'Content-Type': 'application/json' },
+      data: {
+        requestType: 'scrape',
+        owner: user.attributes.username
+      }
+    }
+
+    axios
+      .request(options)
+      .then((data) => {
+        try {
+          console.log(data)
+          fetchMoments()
+          Toast.fire({
+            icon: 'success',
+            title: 'Moments updated successfully.'
+          })
+        } catch (error) {
+          // navigate('/link');
+          Toast.fire({
+            icon: 'error',
+            title: 'Encountered problem in refreshing moments. Please try again later.'
+          })
+        }
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  }
+
   const pushTopShotSelected = async (nftSelected) => {
     if (Number(challenge.attributes.momentQty) <= Number(topShotSelected.length)) {
       const Toast = Swal.mixin({
@@ -123,12 +120,12 @@ function modalChallenge ({
         title: 'You have reached the maximum TopShot Moments you can add.'
       })
     }
-    if (topShotSelected.find((nft) => nft.id === nftSelected.id)) return
+    if (topShotSelected.find((nft) => nft === nftSelected)) return
     setTopshotSelected([...topShotSelected, nftSelected])
   }
 
   const removeTopShotSelected = async (nftSelected) => {
-    setTopshotSelected(topShotSelected.filter((nft) => nft.id !== nftSelected.id))
+    setTopshotSelected(topShotSelected.filter((nft) => nft !== nftSelected))
   }
 
   const submitBetting = (index, challenge) => {
@@ -150,21 +147,20 @@ function modalChallenge ({
         confirmButtonText: 'Yes, submit it!',
         confirmButtonColor: '#FEE603',
         customClass: {
-          confirmButton: 'btn btn-swal'
+          confirmButton: 'btn btn-primary'
         }
       }).then(async (result) => {
         if (result.value) {
           // get the name of the topshotSelected and push it in an array
-          const topshotSelectedName = []
-          for (let i = 0; i < topShotSelected.length; i++) {
-            topshotSelectedName.push(topShotSelected[i].title)
-          }
+          // const topshotSelectedName = []
+          // for (let i = 0; i < topShotSelected.length; i++) {
+          //   topshotSelectedName.push(topShotSelected[i].title)
+          // }
           const challengeBody = {
-            result: topshotSelectedName,
+            result: topShotSelected,
             user,
             challenge,
-            onSelected: topShotSelected,
-            nftSelected: nftSelected.token_id
+            onSelected: topShotSelected
           }
           await save(challengeBody, {
             onSuccess: async function () {
@@ -181,7 +177,7 @@ function modalChallenge ({
                 confirmButtonAriaLabel: 'Thumbs up, great!',
                 cancelButtonAriaLabel: 'Thumbs down',
                 customClass: {
-                  confirmButton: 'btn btn-swal'
+                  confirmButton: 'btn btn-primary'
                 }
               })
               fetch()
@@ -193,7 +189,7 @@ function modalChallenge ({
                 text: error.message,
                 icon: 'warning',
                 customClass: {
-                  confirmButton: 'btn btn-swal'
+                  confirmButton: 'btn btn-primary'
                 }
               })
             }
@@ -206,18 +202,19 @@ function modalChallenge ({
         text: 'Make sure to put your selection and membership!',
         icon: 'warning',
         customClass: {
-          confirmButton: 'btn btn-swal'
+          confirmButton: 'btn-swal'
         }
       })
     }
   }
 
   useEffect(() => {
-    if (!isAuthenticated) return null
+    if (!isAuthenticated && !show) return null
     const getSubmissions = async () => {
       await fetch()
       await getItgNfts()
-      await getTopShot()
+      await fetchMoments()
+      // await getTopShot()
     }
     getSubmissions()
     // console.log('challengeSubmissions', challengeSubmissions)
@@ -251,7 +248,7 @@ function modalChallenge ({
               <div className='row'>
                 {inTheGameNfts?.map((nft, index) => {
                   return (
-                    <div key={index} className='col-lg-2 col-md-4' onClick={() => setNftSelected(nft)}>
+                    <div key={index} className='col-lg-2 col-md-4 ntf_mem' onClick={() => setNftSelected(nft)}>
                       <p className='nft__item'>{'#' + nft.token_id + ' Membership'}</p>
                     </div>
                   )
@@ -263,7 +260,7 @@ function modalChallenge ({
                 </h5>
               </div>
             </div>
-            <div className='col-lg-12 text-center'>
+            <div className='col-lg-12 text-center pb-4'>
               <Button
                 variant='btn btn-light'
                 onClick={() => !isMatchOver && submitBetting(index, challenge)}
@@ -275,54 +272,29 @@ function modalChallenge ({
             <div className='col-md-12'>
               <div className='row'>
                 {topShotSelected.map((nft, index) => (
-                  <div
-                    key={index}
-                    className='d-item col-lg-2 col-md-6 col-sm-6 col-xs-12'
-                    onClick={() => removeTopShotSelected(nft)}
-                  >
-                    <div className='nft__item'>
-                      <div className='nft__item_info'>
-                        <span>
-                          <h4>{nft.title}</h4>
-                        </span>
-                        <div className='nft__item_price pb-3'>{nft.description}</div>
-                      </div>
-                    </div>
+                  <div key={index} className='col-lg-2 col-md-4 ntf_mem' onClick={() => removeTopShotSelected(nft)}>
+                    <p className='nft__item'>{nft}</p>
                   </div>
                 ))}
               </div>
             </div>
             <div className='col-md-12'>
-              <h4 className='h4 lh-base p-5 text-center text-light'>Select moments below</h4>
+              <div className='col-lg-12 text-center'>
+                <h4 className='h4 lh-base p-5 text-center text-light'>Select moments below</h4>
+                <Button variant='btn btn-light' onClick={() => refreshMoments()} disabled={isMatchOver}>
+                  <i className='fa fa-spinner'></i> Refresh
+                </Button>
+              </div>
             </div>
           </div>
-          <div id='scrollableDiv' className='container-fluid' >
-            <InfiniteScroll
-              dataLength={topShotCollected.length}
-              next={getTopShot}
-              hasMore={hasMore}
-              loader={<h4>Loading...</h4>}
-              height={600}
-              className='row'
-              scrollableTarget='scrollableDiv'
-            >
-              {topShotCollected.map((nft, index) => (
-                <div
-                  key={index}
-                  className='d-item col-lg-2 col-md-6 col-sm-6 col-xs-12'
-                  onClick={() => pushTopShotSelected(nft)}
-                >
-                  <div className='nft__item'>
-                    <div className='nft__item_info'>
-                      <span>
-                        <h4>{nft.title}</h4>
-                      </span>
-                      <div className='nft__item_price pb-3'>{nft.description}</div>
-                    </div>
-                  </div>
+          <div className='container'>
+            <div className='row'>
+              {challengeMoments?.map((nft, index) => (
+                <div key={index} className='col-lg-2 col-md-4 ntf_mem' onClick={() => pushTopShotSelected(nft)}>
+                  <p className='nft__item'>{nft}</p>
                 </div>
               ))}
-            </InfiniteScroll>
+            </div>
           </div>
         </Modal.Body>
       </Modal>

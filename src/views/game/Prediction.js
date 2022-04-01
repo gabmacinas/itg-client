@@ -355,7 +355,6 @@ const Prediction = ({ user }) => {
                   } else if (submission?.result !== '' && submission?.prediction?.status === 'active') {
                     dataResult = 'Pending'
                   } else {
-                    dataResult = 'LOSE'
                     iconResult = 'fa fa-times'
                   }
                   return (
