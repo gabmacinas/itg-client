@@ -1,12 +1,11 @@
 import React from 'react'
 import DOMPurify from 'dompurify'
-import testHtml from './html/test.html'
-const mySafeHtml = DOMPurify.sanitize(testHtml)
+import termsHTML from './html/terms.html'
+const mySafeHTML = DOMPurify.sanitize(termsHTML)
 
 function TermsAndConditions () {
   return (
-    // <div>TermsAndConditions</div>
-    <div dangerouslySetInnerHTML={{ __html: mySafeHtml }}></div>
+  <div dangerouslySetInnerHTML={{ __html: mySafeHTML }}></div>
   )
 }
 
