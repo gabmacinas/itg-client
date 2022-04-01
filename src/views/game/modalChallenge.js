@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 // import InfiniteScroll from 'react-infinite-scroll-component'
 import { Modal, Button } from 'react-bootstrap'
-// import axios from 'axios'
+import axios from 'axios'
 import Swal from 'sweetalert2/dist/sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { useMoralis, useMoralisCloudFunction } from 'react-moralis'
@@ -23,9 +23,14 @@ function modalChallenge ({
   const [topShotSelected, setTopshotSelected] = useState([])
   const [nftSelected, setNftSelected] = useState(null)
 
-  const { data: challengeMoments, fetch: fetchMoments } = useMoralisCloudFunction('getUserChallengeMoments', { id: challenge.id, username: user.attributes.username }, [challenge, user], {
-    autoFetch: false
-  })
+  const { data: challengeMoments, fetch: fetchMoments } = useMoralisCloudFunction(
+    'getUserChallengeMoments',
+    { id: challenge.id, username: user.attributes.username },
+    [challenge, user],
+    {
+      autoFetch: false
+    }
+  )
 
   const { data: inTheGameNfts, fetch: getItgNfts } = useMoralisCloudFunction(
     'getItgNfts',
@@ -45,6 +50,57 @@ function modalChallenge ({
       autoFetch: false
     }
   )
+
+  const refreshMoments = async () => {
+    if (user === null) return false
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-right',
+      iconColor: 'white',
+      customClass: {
+        popup: 'colored-toast'
+      },
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true
+    })
+    Toast.fire({
+      icon: 'info',
+      title: 'Refreshing moments. It might take a while.'
+    })
+
+    const options = {
+      method: 'POST',
+      url: process.env.REACT_APP_TOPSHOT_API,
+      headers: { 'Content-Type': 'application/json' },
+      data: {
+        requestType: 'scrape',
+        owner: user.attributes.username
+      }
+    }
+
+    axios
+      .request(options)
+      .then((data) => {
+        try {
+          console.log(data)
+          fetchMoments()
+          Toast.fire({
+            icon: 'success',
+            title: 'Moments updated successfully.'
+          })
+        } catch (error) {
+          // navigate('/link');
+          Toast.fire({
+            icon: 'error',
+            title: 'Encountered problem in refreshing moments. Please try again later.'
+          })
+        }
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  }
 
   const pushTopShotSelected = async (nftSelected) => {
     if (Number(challenge.attributes.momentQty) <= Number(topShotSelected.length)) {
@@ -223,26 +279,22 @@ function modalChallenge ({
               </div>
             </div>
             <div className='col-md-12'>
-            <div className='col-lg-12 text-center'>
-              <h4 className='h4 lh-base p-5 text-center text-light'>Select moments below</h4>
-              <Button
-                variant='btn btn-light'
-                onClick={() => !isMatchOver && submitBetting(index, challenge)}
-                disabled={isMatchOver}
-              >
-                <i className='fa fa-spinner'></i> Refresh
-              </Button>
-            </div>
+              <div className='col-lg-12 text-center'>
+                <h4 className='h4 lh-base p-5 text-center text-light'>Select moments below</h4>
+                <Button variant='btn btn-light' onClick={() => refreshMoments()} disabled={isMatchOver}>
+                  <i className='fa fa-spinner'></i> Refresh
+                </Button>
+              </div>
             </div>
           </div>
-            <div className="container">
-            <div className="row">
+          <div className='container'>
+            <div className='row'>
               {challengeMoments?.map((nft, index) => (
                 <div key={index} className='col-lg-2 col-md-4 ntf_mem' onClick={() => pushTopShotSelected(nft)}>
                   <p className='nft__item'>{nft}</p>
                 </div>
               ))}
-          </div>
+            </div>
           </div>
         </Modal.Body>
       </Modal>
