@@ -83,6 +83,7 @@ const Handicap = ({ user }) => {
                   confirmButton: 'btn btn-swal'
                 }
               })
+              fetch()
             },
             onError: function (error) {
               MySwal.fire({
