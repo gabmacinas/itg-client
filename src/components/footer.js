@@ -9,13 +9,13 @@ export default function footer () {
               <h3 className='footer-head'>About</h3>
               <ul>
                 <li>
-                  <a href='#'>About</a>
+                  <a href='/'>About</a>
                 </li>
                 <li>
-                  <a href='#'>Team</a>
+                  <a href='team'>Team</a>
                 </li>
                 <li>
-                  <a href='#'>Terms And Conditions</a>
+                  <a href='terms'>Terms And Conditions</a>
                 </li>
               </ul>
             </div>
