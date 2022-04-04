@@ -25,7 +25,7 @@ function modalChallenge ({
 
   const { data: challengeMoments, fetch: fetchMoments } = useMoralisCloudFunction(
     'getUserChallengeMoments',
-    { id: challenge.id, username: user.attributes.username },
+    { id: challenge?.id, username: user?.attributes?.username },
     [challenge, user],
     {
       autoFetch: false
