@@ -3,6 +3,7 @@ import { useMoralis } from 'react-moralis'
 import Swal from 'sweetalert2/dist/sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 function BindAccount () {
   const MySwal = withReactContent(Swal)
@@ -25,7 +26,8 @@ function BindAccount () {
   const getDapperUser = async () => {
     if (user === null) return false
     setError({})
-    await fetch(process.env.REACT_APP_TOPSHOT_API, {
+    const url = process.env.REACT_APP_NODE_ENV === 'production' ? process.env.REACT_APP_MAINNET_API : process.env.REACT_APP_TESTNET_API
+    await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -56,6 +58,56 @@ function BindAccount () {
       })
   }
 
+  const refreshMoments = async () => {
+    if (user === null) return false
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-right',
+      iconColor: 'white',
+      customClass: {
+        popup: 'colored-toast'
+      },
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true
+    })
+    Toast.fire({
+      icon: 'info',
+      title: 'Refreshing moments. It might take a while.'
+    })
+    const url = process.env.REACT_APP_NODE_ENV === 'production' ? process.env.REACT_APP_MAINNET_API : process.env.REACT_APP_TESTNET_API
+    const options = {
+      method: 'POST',
+      url,
+      headers: { 'Content-Type': 'application/json' },
+      data: {
+        requestType: 'scrape',
+        owner: user.attributes.username
+      }
+    }
+
+    axios
+      .request(options)
+      .then((data) => {
+        try {
+          console.log(data)
+          Toast.fire({
+            icon: 'success',
+            title: 'Moments updated successfully.'
+          })
+        } catch (error) {
+          // navigate('/link');
+          Toast.fire({
+            icon: 'error',
+            title: 'Encountered problem in refreshing moments. Please try again later.'
+          })
+        }
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  }
+
   const bindAccount = async () => {
     if (user === null) return false
     if (user) {
@@ -72,7 +124,8 @@ function BindAccount () {
               confirmButton: 'btn btn-swal'
             }
           }).then(() => {
-            navigate('/collections')
+            navigate('/')
+            refreshMoments()
           })
         },
         (error) => {

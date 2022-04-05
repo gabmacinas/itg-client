@@ -68,10 +68,10 @@ function modalChallenge ({
       icon: 'info',
       title: 'Refreshing moments. It might take a while.'
     })
-
+    const url = process.env.REACT_APP_NODE_ENV === 'production' ? process.env.REACT_APP_MAINNET_API : process.env.REACT_APP_TESTNET_API
     const options = {
       method: 'POST',
-      url: process.env.REACT_APP_TOPSHOT_API,
+      url,
       headers: { 'Content-Type': 'application/json' },
       data: {
         requestType: 'scrape',
