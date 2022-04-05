@@ -214,10 +214,12 @@ function modalChallenge ({
       await fetch()
       await getItgNfts()
       await fetchMoments()
-      // await getTopShot()
     }
     getSubmissions()
-    // console.log('challengeSubmissions', challengeSubmissions)
+    return () => {
+      setTopshotSelected([])
+      setNftSelected(null)
+    }
   }, [isAuthenticated])
 
   return (
