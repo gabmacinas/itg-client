@@ -5,8 +5,10 @@ import { useMoralisCloudFunction, useNewMoralisObject, useMoralisQuery } from 'r
 import Moment from 'react-moment'
 import ModalChallenge from './modalChallenge'
 import Countdown from 'react-countdown'
+import { useNavigate } from 'react-router-dom'
 
 const Challenge = ({ user, isAuthenticated }) => {
+  const navigate = useNavigate()
   const [onSelected, setOnSelected] = useState([])
   const [isMatchOver, setIsMatchOver] = useState(false)
   const [show, setShow] = useState(false)
@@ -41,9 +43,9 @@ const Challenge = ({ user, isAuthenticated }) => {
   useEffect(() => {
     if (!isAuthenticated) return null
     const getSubmissions = async () => {
+      const usernameUpdated = await user.get('usernameUpdated') || false
+      if (!usernameUpdated) return navigate('/link')
       await fetch()
-      // await getItgNfts()
-      // await getTopShot()
     }
     getSubmissions()
     // console.log('challengeSubmissions', challengeSubmissions)
@@ -51,6 +53,11 @@ const Challenge = ({ user, isAuthenticated }) => {
 
   useEffect(() => {
     // fetch()
+    return () => {
+      setOnSelected([])
+      setIsMatchOver(false)
+      setShow(false)
+    }
   }, [])
 
   // Random component
@@ -99,7 +106,7 @@ const Challenge = ({ user, isAuthenticated }) => {
                                 <hr className='border-secondary mb-0 mt-0' />
                               </div>
                               <div className='col-auto'>
-                                <h2 className='fw-bold h4 mb-0 text-uppercase'>
+                                <h2 className='fw-bold h4 mb-0 text-uppercase' style={{ color: '#fee600' }}>
                                   {challenge.attributes.title}
                                 </h2>
                               </div>
@@ -220,7 +227,7 @@ const Challenge = ({ user, isAuthenticated }) => {
                 <div className='row'>
                   <div className='col-lg-12'>
                     <div className='text-center'>
-                      <h4 className='p-4'>Your Submissions</h4>
+                      <h4 className='p-4' style={{ color: '#fee600' }}>Your Submissions</h4>
                       <div className='small-border'></div>
                     </div>
                   </div>

@@ -244,7 +244,7 @@ function modalChallenge ({
               </div>
             </div>
             <div className='col-md-12'>
-              <h4 className='h4 lh-base p-5 text-center text-light'>Pick Membership</h4>
+              <h4 className='h4 lh-base p-5 text-center text-light' style={{ color: '#fee600' }}>Pick Your Membership</h4>
             </div>
             <div className='col-md-12'>
               <div className='row'>

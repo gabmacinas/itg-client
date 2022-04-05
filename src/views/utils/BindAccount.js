@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useMoralis } from 'react-moralis'
 import Swal from 'sweetalert2/dist/sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
@@ -8,9 +8,19 @@ function BindAccount () {
   const MySwal = withReactContent(Swal)
   const navigate = useNavigate()
 
-  const { user } = useMoralis()
+  const { user, isAuthenticated } = useMoralis()
   const [username, setUsername] = useState('')
   const [hasError, setError] = useState({})
+
+  useEffect(() => {
+    if (!isAuthenticated) return null
+    const getInformation = async () => {
+      const usernameUpdated = await user.get('usernameUpdated') || false
+      if (usernameUpdated) navigate('/')
+    }
+    getInformation()
+    // console.log('challengeSubmissions', challengeSubmissions)
+  }, [isAuthenticated])
 
   const getDapperUser = async () => {
     if (user === null) return false
@@ -50,6 +60,7 @@ function BindAccount () {
     if (user === null) return false
     if (user) {
       user.set('username', username)
+      user.set('requestType', 'linkAccount')
       user.save().then(
         (result) => {
           // console.log('saved', result);
