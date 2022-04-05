@@ -11,28 +11,20 @@ import contractAbi from './contractAbi.json'
 import Web3 from 'web3'
 import withReactContent from 'sweetalert2-react-content'
 import Swal from 'sweetalert2/dist/sweetalert2'
+// Pages
+import Handicap from './views/game/Handicap'
+import Challenges from './views/game/Challenges'
+import Prediction from './views/game/Prediction'
+
+import BindAccount from './views/utils/BindAccount'
+// import Collections = from './views/utils/Collections'
+import TermsAndConditions from './views/TermsAndConditions'
+import Team from './views/Team'
 
 const provider = new Web3.providers.HttpProvider(process.env.REACT_APP_NODE_ENV === 'production' ? process.env.REACT_APP_MAINNET_NODE_API : process.env.REACT_APP_TESTNET_NODE_API)
 const web3 = new Web3(provider)
 const contractAddress = process.env.REACT_APP_NODE_ENV === 'production' ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS : process.env.REACT_APP_TESTNET_CONTRACT_ADDRESS
 const nftContract = new web3.eth.Contract(contractAbi.abi, contractAddress)
-
-// TODO: Implement a loading screen spinner
-const loading = (
-  <div className='text-center'>
-    <h1>Loading...</h1>
-  </div>
-)
-
-// Pages
-const Handicap = React.lazy(() => import('./views/game/Handicap'))
-const Challenges = React.lazy(() => import('./views/game/Challenges'))
-const Prediction = React.lazy(() => import('./views/game/Prediction'))
-
-const BindAccount = React.lazy(() => import('./views/utils/BindAccount'))
-// const Collections = React.lazy(() => import('./views/utils/Collections'))
-const TermsAndConditions = React.lazy(() => import('./views/TermsAndConditions'))
-const Team = React.lazy(() => import('./views/Team'))
 
 function App () {
   // const { authenticate, user, isAuthenticated, isAuthenticating, logout } = useMoralis()
@@ -183,7 +175,6 @@ function App () {
         isAuthenticating={isAuthenticating}
         logout={logout}
       />
-      <React.Suspense fallback={loading}>
         <Routes>
           <Route path='/' element={<Home
             isMinting={isMinting}
@@ -209,7 +200,6 @@ function App () {
           <Route path='/team' element={<Team />} />
           <Route path="*" element={<Home />} />
         </Routes>
-      </React.Suspense>
       <Footer />
     </BrowserRouter>
   )
