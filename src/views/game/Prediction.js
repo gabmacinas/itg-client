@@ -5,6 +5,21 @@ import { useMoralis, useMoralisCloudFunction, useNewMoralisObject, useMoralisQue
 import Swal from 'sweetalert2/dist/sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import Moment from 'react-moment'
+import Countdown from 'react-countdown'
+
+// Random component
+const CompletionMessage = () => <div>Match already started</div>
+
+// Renderer callback with condition
+const renderer = ({ hours, minutes, seconds, completed }) => {
+  if (completed) {
+    // Render a completed state
+    return <CompletionMessage />
+  } else {
+    // Render a countdown
+    return <span>{hours}:{minutes}:{seconds}</span>
+  }
+}
 
 const Prediction = ({ user }) => {
   const { enableWeb3, isAuthenticated, isWeb3Enabled } = useMoralis()
@@ -190,7 +205,9 @@ const Prediction = ({ user }) => {
                             </h4>
                           </div>
                         </div>
-                        <h5 className='fw-bold h5 pb-3 pe-0 ps-0 pt-0 text-center text-light'>Match Starts <Moment fromNow>{prediction.attributes.matchDate}</Moment></h5>
+                        <h5 className='fw-bold h5 pb-3 pe-0 ps-0 pt-0 text-center text-light'>
+                          {!isMatchOver ? 'Match starts in: ' : null} <Countdown date={prediction.attributes.matchDate} renderer={renderer} />
+                        </h5>
                           <div className='container text-center'>
                             <div className='accent game-row'>
                               <div className='proportions-box-square'>
