@@ -268,7 +268,7 @@ const Challenge = ({ user, isAuthenticated }) => {
                       } else if (submission?.result !== '' && submission?.challenge?.status === 'active') {
                         dataResult = 'Pending'
                       } else {
-                        dataResult = 'LOSE'
+                        dataResult = ''
                         iconResult = 'fa fa-times'
                       }
                       return (

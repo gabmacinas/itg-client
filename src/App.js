@@ -6,7 +6,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Navbar from './components/navbar'
 import Footer from './components/footer'
 import Home from './views/home/Home'
-import { useMoralis } from 'react-moralis'
+import { useMoralis, useMoralisQuery } from 'react-moralis'
 import contractAbi from './contractAbi.json'
 import Web3 from 'web3'
 import withReactContent from 'sweetalert2-react-content'
@@ -40,6 +40,11 @@ function App () {
   const [mintQty, setMintQty] = useState(1)
   const [balanceOf, setUserBalanceOf] = useState(0)
   const [mintCost, setMintCost] = useState(0)
+
+  const { data: content, fetch: getContent } = useMoralisQuery(
+    'Contents', query => query.equalTo('status', 'active'), [],
+    { autoFetch: false }
+  )
 
   const getContractInformation = async () => {
     setTotalMint(await nftContract.methods.totalSupply().call())
@@ -161,6 +166,8 @@ function App () {
   }, [])
 
   useEffect(() => {
+    getContent()
+
     if (isAuthenticated && isWeb3Enabled) {
       getContractInformation()
     }
@@ -174,6 +181,8 @@ function App () {
         isAuthenticated={isAuthenticated}
         isAuthenticating={isAuthenticating}
         logout={logout}
+        content={content}
+        balanceOf={Number(balanceOf)}
       />
         <Routes>
           <Route path='/' element={<Home
@@ -190,9 +199,9 @@ function App () {
             balanceOf={Number(balanceOf)}
             isAuthenticated={isAuthenticated}
           />} />
-          <Route path='/handicap' element={<Handicap user={user} />} />
-          <Route path='/challenges' element={<Challenges user={user} isAuthenticated={isAuthenticated} />} />
-          <Route path='/prediction' element={<Prediction user={user} />} />
+          <Route path='/handicap' element={<Handicap user={user} content={content} />} />
+          <Route path='/challenges' element={<Challenges user={user} isAuthenticated={isAuthenticated} content={content} />} />
+          <Route path='/prediction' element={<Prediction user={user} content={content} />} />
 
           {/* <Route path='/collections' element={<Collections isAuthenticated={isAuthenticated} />} /> */}
           <Route path='/link' element={<BindAccount isAuthenticated={isAuthenticated} />} />
