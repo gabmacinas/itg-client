@@ -81,7 +81,7 @@ const Challenge = ({ user, isAuthenticated }) => {
           className='pt-5'
           data-bss-parallax-bg='true'
           data-pg-name='Main Section'
-          style={{ backgroundImage: 'url(' + 'assets/img/bg1.jpg' + ')', marginBottom: '100px' }}
+          style={{ backgroundImage: 'url(' + 'assets/img/BG3.svg' + ')' }}
         >
           <div className='container lh-lg text-center'>
             {isChallengeLoading

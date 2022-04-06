@@ -21,7 +21,7 @@ const Intro = ({
         className='d-flex align-content-center'
         data-bss-parallax-bg='true'
         id='intro-section'
-        style={{ backgroundImage: 'url(' + 'assets/img/bg1.jpg' + ')' }}
+        style={{ backgroundImage: 'url(' + 'assets/img/BG3.svg' + ')' }}
       >
         <div className='container'>
           <div className='row d-flex align-items-center align-content-center' id='main-intro-container'>
