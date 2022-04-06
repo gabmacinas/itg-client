@@ -6,32 +6,25 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Navbar from './components/navbar'
 import Footer from './components/footer'
 import Home from './views/home/Home'
-import { useMoralis } from 'react-moralis'
+import { useMoralis, useMoralisQuery } from 'react-moralis'
 import contractAbi from './contractAbi.json'
 import Web3 from 'web3'
 import withReactContent from 'sweetalert2-react-content'
 import Swal from 'sweetalert2/dist/sweetalert2'
+// Pages
+import Handicap from './views/game/Handicap'
+import Challenges from './views/game/Challenges'
+import Prediction from './views/game/Prediction'
+
+import BindAccount from './views/utils/BindAccount'
+// import Collections = from './views/utils/Collections'
+import TermsAndConditions from './views/TermsAndConditions'
+import Team from './views/Team'
 
 const provider = new Web3.providers.HttpProvider(process.env.REACT_APP_NODE_ENV === 'production' ? process.env.REACT_APP_MAINNET_NODE_API : process.env.REACT_APP_TESTNET_NODE_API)
 const web3 = new Web3(provider)
 const contractAddress = process.env.REACT_APP_NODE_ENV === 'production' ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS : process.env.REACT_APP_TESTNET_CONTRACT_ADDRESS
 const nftContract = new web3.eth.Contract(contractAbi.abi, contractAddress)
-
-// TODO: Implement a loading screen spinner
-const loading = (
-  <div className='text-center'>
-    <h1>Loading...</h1>
-  </div>
-)
-
-// Pages
-const Handicap = React.lazy(() => import('./views/game/Handicap'))
-const Challenges = React.lazy(() => import('./views/game/Challenges'))
-const Prediction = React.lazy(() => import('./views/game/Prediction'))
-
-const BindAccount = React.lazy(() => import('./views/utils/BindAccount'))
-// const Collections = React.lazy(() => import('./views/utils/Collections'))
-const TermsAndConditions = React.lazy(() => import('./views/TermsAndConditions'))
 
 function App () {
   // const { authenticate, user, isAuthenticated, isAuthenticating, logout } = useMoralis()
@@ -47,6 +40,11 @@ function App () {
   const [mintQty, setMintQty] = useState(1)
   const [balanceOf, setUserBalanceOf] = useState(0)
   const [mintCost, setMintCost] = useState(0)
+
+  const { data: content, fetch: getContent } = useMoralisQuery(
+    'Contents', query => query.equalTo('status', 'active'), [],
+    { autoFetch: false }
+  )
 
   const getContractInformation = async () => {
     setTotalMint(await nftContract.methods.totalSupply().call())
@@ -168,6 +166,8 @@ function App () {
   }, [])
 
   useEffect(() => {
+    getContent()
+
     if (isAuthenticated && isWeb3Enabled) {
       getContractInformation()
     }
@@ -181,8 +181,9 @@ function App () {
         isAuthenticated={isAuthenticated}
         isAuthenticating={isAuthenticating}
         logout={logout}
+        content={content}
+        balanceOf={Number(balanceOf)}
       />
-      <React.Suspense fallback={loading}>
         <Routes>
           <Route path='/' element={<Home
             isMinting={isMinting}
@@ -198,16 +199,16 @@ function App () {
             balanceOf={Number(balanceOf)}
             isAuthenticated={isAuthenticated}
           />} />
-          <Route path='/handicap' element={<Handicap user={user} />} />
-          <Route path='/challenges' element={<Challenges user={user} isAuthenticated={isAuthenticated} />} />
-          <Route path='/prediction' element={<Prediction user={user} />} />
+          <Route path='/handicap' element={<Handicap user={user} content={content} />} />
+          <Route path='/challenges' element={<Challenges user={user} isAuthenticated={isAuthenticated} content={content} />} />
+          <Route path='/prediction' element={<Prediction user={user} content={content} />} />
 
           {/* <Route path='/collections' element={<Collections isAuthenticated={isAuthenticated} />} /> */}
           <Route path='/link' element={<BindAccount isAuthenticated={isAuthenticated} />} />
           <Route path='/terms' element={<TermsAndConditions />} />
+          <Route path='/team' element={<Team />} />
           <Route path="*" element={<Home />} />
         </Routes>
-      </React.Suspense>
       <Footer />
     </BrowserRouter>
   )

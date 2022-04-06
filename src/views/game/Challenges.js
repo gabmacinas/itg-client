@@ -4,8 +4,11 @@ import PropTypes from 'prop-types'
 import { useMoralisCloudFunction, useNewMoralisObject, useMoralisQuery } from 'react-moralis'
 import Moment from 'react-moment'
 import ModalChallenge from './modalChallenge'
+import Countdown from 'react-countdown'
+import { useNavigate } from 'react-router-dom'
 
 const Challenge = ({ user, isAuthenticated }) => {
+  const navigate = useNavigate()
   const [onSelected, setOnSelected] = useState([])
   const [isMatchOver, setIsMatchOver] = useState(false)
   const [show, setShow] = useState(false)
@@ -40,9 +43,9 @@ const Challenge = ({ user, isAuthenticated }) => {
   useEffect(() => {
     if (!isAuthenticated) return null
     const getSubmissions = async () => {
+      const usernameUpdated = await user.get('usernameUpdated') || false
+      if (!usernameUpdated) return navigate('/link')
       await fetch()
-      // await getItgNfts()
-      // await getTopShot()
     }
     getSubmissions()
     // console.log('challengeSubmissions', challengeSubmissions)
@@ -50,7 +53,26 @@ const Challenge = ({ user, isAuthenticated }) => {
 
   useEffect(() => {
     // fetch()
+    return () => {
+      setOnSelected([])
+      setIsMatchOver(false)
+      setShow(false)
+    }
   }, [])
+
+  // Random component
+  const CompletionMessage = () => <div>Match already started</div>
+
+  // Renderer callback with condition
+  const renderer = ({ hours, minutes, seconds, completed }) => {
+    if (completed) {
+    // Render a completed state
+      return <CompletionMessage />
+    } else {
+    // Render a countdown
+      return <span>{hours}:{minutes}:{seconds}</span>
+    }
+  }
 
   return (
     <>
@@ -84,7 +106,7 @@ const Challenge = ({ user, isAuthenticated }) => {
                                 <hr className='border-secondary mb-0 mt-0' />
                               </div>
                               <div className='col-auto'>
-                                <h2 className='fw-bold h4 mb-0 text-uppercase'>
+                                <h2 className='fw-bold h4 mb-0 text-uppercase' style={{ color: '#fee600' }}>
                                   {challenge.attributes.title}
                                 </h2>
                               </div>
@@ -99,7 +121,7 @@ const Challenge = ({ user, isAuthenticated }) => {
                             </div>
                           </div>
                           <h5 className='fw-bold h5 pb-3 pe-0 ps-0 pt-0 text-center text-light'>
-                            Match Starts <Moment fromNow>{challenge.attributes.matchDate}</Moment>
+                            {!isMatchOver ? 'Match starts in: ' : null} <Countdown date={challenge.attributes.matchDate} renderer={renderer} />
                           </h5>
                           <div className='container text-center'>
                             <div className='accent game-row'>
@@ -109,11 +131,6 @@ const Challenge = ({ user, isAuthenticated }) => {
                               </div>
                             </div>
                           </div>
-
-                          <div className='row'>
-                            <div className='col-lg-12'>{isMatchOver ? <h2>Match already started</h2> : <></>}</div>
-                          </div>
-
                           <div className='game-row row'>
                             {challenge.matches?.map((game, matchIndex) => {
                               return (
@@ -210,7 +227,7 @@ const Challenge = ({ user, isAuthenticated }) => {
                 <div className='row'>
                   <div className='col-lg-12'>
                     <div className='text-center'>
-                      <h4 className='p-4'>Your Submissions</h4>
+                      <h4 className='p-4' style={{ color: '#fee600' }}>Your Submissions</h4>
                       <div className='small-border'></div>
                     </div>
                   </div>
@@ -251,7 +268,7 @@ const Challenge = ({ user, isAuthenticated }) => {
                       } else if (submission?.result !== '' && submission?.challenge?.status === 'active') {
                         dataResult = 'Pending'
                       } else {
-                        dataResult = 'LOSE'
+                        dataResult = ''
                         iconResult = 'fa fa-times'
                       }
                       return (

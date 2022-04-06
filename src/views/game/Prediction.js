@@ -5,8 +5,11 @@ import { useMoralis, useMoralisCloudFunction, useNewMoralisObject, useMoralisQue
 import Swal from 'sweetalert2/dist/sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import Moment from 'react-moment'
+import Countdown from 'react-countdown'
+import { useNavigate } from 'react-router-dom'
 
 const Prediction = ({ user }) => {
+  const navigate = useNavigate()
   const { enableWeb3, isAuthenticated, isWeb3Enabled } = useMoralis()
   const MySwal = withReactContent(Swal)
   const [onSelected, setOnSelected] = useState([])
@@ -34,6 +37,16 @@ const Prediction = ({ user }) => {
     autoFetch: false
   })
   const { save } = useNewMoralisObject('PredictionSubmissions')
+
+  const CompletionMessage = () => <div>Match already started</div>
+
+  const renderer = ({ hours, minutes, seconds, completed }) => {
+    if (completed) {
+      return <CompletionMessage />
+    } else {
+      return <span>{hours}:{minutes}:{seconds}</span>
+    }
+  }
 
   const submitBetting = (index, prediction) => {
     let hasEmptySubmission = false
@@ -135,8 +148,10 @@ const Prediction = ({ user }) => {
   useEffect(() => {
     if (!isAuthenticated) return null
     const getSubmissions = async () => {
-      fetch()
-      getItgNfts()
+      const usernameUpdated = await user.get('usernameUpdated') || false
+      if (!usernameUpdated) return navigate('/link')
+      await fetch()
+      await getItgNfts()
     }
     getSubmissions()
     // console.log('predictionSubmissions', predictionSubmissions)
@@ -144,7 +159,11 @@ const Prediction = ({ user }) => {
 
   useEffect(() => {
     enableWeb3()
-    // fetch()
+    return () => {
+      setOnSelected([])
+      setIsMatchOver(false)
+      setNftSelected(null)
+    }
   }, [])
 
   return (
@@ -190,7 +209,9 @@ const Prediction = ({ user }) => {
                             </h4>
                           </div>
                         </div>
-                        <h5 className='fw-bold h5 pb-3 pe-0 ps-0 pt-0 text-center text-light'>Match Starts <Moment fromNow>{prediction.attributes.matchDate}</Moment></h5>
+                        <h5 className='fw-bold h5 pb-3 pe-0 ps-0 pt-0 text-center text-light'>
+                          {!isMatchOver ? 'Match starts in: ' : null} <Countdown date={prediction.attributes.matchDate} renderer={renderer} />
+                        </h5>
                           <div className='container text-center'>
                             <div className='accent game-row'>
                               <div className='proportions-box-square'>
@@ -209,7 +230,7 @@ const Prediction = ({ user }) => {
                                   <>
                                   <div id='zero2' className='onStep fadeIn'>
                                     <div className='row'>
-                                      <div className="col-lg-12"><h5 style={{ textAlign: 'center' }}>Pick your Membership</h5></div>
+                                      <div className="col-lg-12"><h5 style={{ textAlign: 'center', color: '#fee600' }}>Pick your Membership</h5></div>
                                         {inTheGameNfts?.map((nft, index) => {
                                           return (
                                             <div key={index} className='col-lg-2 col-md-4' onClick={() => setNftSelected(nft) } >
@@ -321,7 +342,7 @@ const Prediction = ({ user }) => {
             <div className='row'>
               <div className='col-lg-12'>
                 <div className='text-center'>
-                  <h4 className='p-4'>Your Submissions</h4>
+                  <h4 className='p-4' style={{ color: '#fee600' }}>Your Submissions</h4>
                   <div className='small-border'></div>
                 </div>
               </div>

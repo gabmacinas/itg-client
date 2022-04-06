@@ -25,7 +25,7 @@ function modalChallenge ({
 
   const { data: challengeMoments, fetch: fetchMoments } = useMoralisCloudFunction(
     'getUserChallengeMoments',
-    { id: challenge.id, username: user.attributes.username },
+    { id: challenge?.id, username: user?.attributes?.username },
     [challenge, user],
     {
       autoFetch: false
@@ -68,10 +68,10 @@ function modalChallenge ({
       icon: 'info',
       title: 'Refreshing moments. It might take a while.'
     })
-
+    const url = process.env.REACT_APP_NODE_ENV === 'production' ? process.env.REACT_APP_MAINNET_API : process.env.REACT_APP_TESTNET_API
     const options = {
       method: 'POST',
-      url: process.env.REACT_APP_TOPSHOT_API,
+      url,
       headers: { 'Content-Type': 'application/json' },
       data: {
         requestType: 'scrape',
@@ -214,10 +214,12 @@ function modalChallenge ({
       await fetch()
       await getItgNfts()
       await fetchMoments()
-      // await getTopShot()
     }
     getSubmissions()
-    // console.log('challengeSubmissions', challengeSubmissions)
+    return () => {
+      setTopshotSelected([])
+      setNftSelected(null)
+    }
   }, [isAuthenticated])
 
   return (
@@ -242,7 +244,7 @@ function modalChallenge ({
               </div>
             </div>
             <div className='col-md-12'>
-              <h4 className='h4 lh-base p-5 text-center text-light'>Pick Membership</h4>
+              <h4 className='h4 lh-base p-5 text-center text-light' style={{ color: '#fee600' }}>Pick Your Membership</h4>
             </div>
             <div className='col-md-12'>
               <div className='row'>

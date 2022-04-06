@@ -1,4 +1,5 @@
 import React from 'react'
+import { LinkContainer } from 'react-router-bootstrap'
 
 export default function footer () {
   return (
@@ -9,13 +10,19 @@ export default function footer () {
               <h3 className='footer-head'>About</h3>
               <ul>
                 <li>
-                  <a href='#'>About</a>
+                <LinkContainer to='/'>
+                  <a>FAQs</a>
+                </LinkContainer>
                 </li>
                 <li>
-                  <a href='#'>Team</a>
+                  <LinkContainer to='/team'>
+                  <a>Team</a>
+                  </LinkContainer>
                 </li>
                 <li>
-                  <a href='#'>Terms And Conditions</a>
+                  <LinkContainer to='/terms'>
+                  <a>Terms And Conditions</a>
+                  </LinkContainer>
                 </li>
               </ul>
             </div>
