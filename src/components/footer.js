@@ -24,6 +24,9 @@ export default function footer () {
                   <a>Terms And Conditions</a>
                   </LinkContainer>
                 </li>
+                <li>
+                  <a href='mailto:team@inthegamenft.io'>team@inthegamenft.io</a>
+                </li>
               </ul>
             </div>
             <div className='col-md-9 item text'>

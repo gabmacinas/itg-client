@@ -21,14 +21,31 @@ import BindAccount from './views/utils/BindAccount'
 import TermsAndConditions from './views/TermsAndConditions'
 import Team from './views/Team'
 
-const provider = new Web3.providers.HttpProvider(process.env.REACT_APP_NODE_ENV === 'production' ? process.env.REACT_APP_MAINNET_NODE_API : process.env.REACT_APP_TESTNET_NODE_API)
+const provider = new Web3.providers.HttpProvider(
+  process.env.REACT_APP_NODE_ENV === 'production'
+    ? process.env.REACT_APP_MAINNET_NODE_API
+    : process.env.REACT_APP_TESTNET_NODE_API
+)
 const web3 = new Web3(provider)
-const contractAddress = process.env.REACT_APP_NODE_ENV === 'production' ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS : process.env.REACT_APP_TESTNET_CONTRACT_ADDRESS
+const contractAddress =
+  process.env.REACT_APP_NODE_ENV === 'production'
+    ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS
+    : process.env.REACT_APP_TESTNET_CONTRACT_ADDRESS
 const nftContract = new web3.eth.Contract(contractAbi.abi, contractAddress)
 
 function App () {
   // const { authenticate, user, isAuthenticated, isAuthenticating, logout } = useMoralis()
-  const { enableWeb3, Moralis, isWeb3Enabled, isAuthenticated, authenticate, user, web3: metamaskWeb3, isAuthenticating, logout } = useMoralis()
+  const {
+    enableWeb3,
+    Moralis,
+    isWeb3Enabled,
+    isAuthenticated,
+    authenticate,
+    user,
+    web3: metamaskWeb3,
+    isAuthenticating,
+    logout
+  } = useMoralis()
   const MySwal = withReactContent(Swal)
   const [isMinting, setMinting] = useState(false)
   const [totalMint, setTotalMint] = useState(0)
@@ -40,9 +57,12 @@ function App () {
   const [mintQty, setMintQty] = useState(1)
   const [balanceOf, setUserBalanceOf] = useState(0)
   const [mintCost, setMintCost] = useState(0)
+  const [showMint, setShowMint] = useState(false)
 
   const { data: content, fetch: getContent } = useMoralisQuery(
-    'Contents', query => query.equalTo('status', 'active'), [],
+    'Contents',
+    (query) => query.equalTo('status', 'active'),
+    [],
     { autoFetch: false }
   )
 
@@ -99,7 +119,9 @@ function App () {
                 title: 'Thank You!',
                 html: `
                 <p>You have successfully purchased <b>${mintQty}</b> membership${mintQty > 1 ? 's' : ''}. 
-                <a href='https://${process.env.REACT_APP_NODE_ENV === 'development' && process.env.REACT_APP_TESTNET_NETWORK_NAME + '.'}etherscan.io/tx/${
+                <a href='https://${
+                  process.env.REACT_APP_NODE_ENV === 'development' && process.env.REACT_APP_TESTNET_NETWORK_NAME + '.'
+                }etherscan.io/tx/${
                   receipt.transactionHash
                 }' target="_blank">Click here to view your transaction in Etherscan</a>
                 </p>
@@ -152,6 +174,11 @@ function App () {
 
   useEffect(() => {
     enableWeb3()
+    setShowMint(
+      process.env.REACT_APP_NODE_ENV === 'production'
+        ? process.env.REACT_APP_MINTING_MAINNET
+        : process.env.REACT_APP_MINTING_TESTNET
+    )
     return () => {
       setMinting(false)
       setTotalMint(0)
@@ -183,32 +210,44 @@ function App () {
         logout={logout}
         content={content}
         balanceOf={Number(balanceOf)}
+        showMint={showMint}
       />
-        <Routes>
-          <Route path='/' element={<Home
-            isMinting={isMinting}
-            mint={mint}
-            totalMint={Number(totalMint)}
-            maxSupply={Number(maxSupply)}
-            isMintPaused={isMintPaused}
-            isWhitelistEnabled={isWhitelistEnabled}
-            isUserWhitelisted={isUserWhitelisted}
-            setMintQty={setMintQty}
-            mintQty={Number(mintQty)}
-            maxMintQty={Number(maxMintQty)}
-            balanceOf={Number(balanceOf)}
-            isAuthenticated={isAuthenticated}
-          />} />
-          <Route path='/handicap' element={<Handicap user={user} content={content} />} />
-          <Route path='/challenges' element={<Challenges user={user} isAuthenticated={isAuthenticated} content={content} />} />
-          <Route path='/prediction' element={<Prediction user={user} content={content} />} />
+      <Routes>
+        <Route
+          path='/'
+          element={
+            <Home
+              isMinting={isMinting}
+              mint={mint}
+              totalMint={Number(totalMint)}
+              maxSupply={Number(maxSupply)}
+              isMintPaused={isMintPaused}
+              isWhitelistEnabled={isWhitelistEnabled}
+              isUserWhitelisted={isUserWhitelisted}
+              setMintQty={setMintQty}
+              mintQty={Number(mintQty)}
+              maxMintQty={Number(maxMintQty)}
+              balanceOf={Number(balanceOf)}
+              isAuthenticated={isAuthenticated}
+            />
+          }
+        />
+        {showMint && (
+          <>
+            <Route path='/handicap' element={<Handicap user={user} content={content} />} />
+            <Route
+              path='/challenges'
+              element={<Challenges user={user} isAuthenticated={isAuthenticated} content={content} />}
+            />
+            <Route path='/prediction' element={<Prediction user={user} content={content} />} />
+            <Route path='/link' element={<BindAccount isAuthenticated={isAuthenticated} />} />
+          </>
+        )}
 
-          {/* <Route path='/collections' element={<Collections isAuthenticated={isAuthenticated} />} /> */}
-          <Route path='/link' element={<BindAccount isAuthenticated={isAuthenticated} />} />
-          <Route path='/terms' element={<TermsAndConditions />} />
-          <Route path='/team' element={<Team />} />
-          <Route path="*" element={<Home />} />
-        </Routes>
+        <Route path='/terms' element={<TermsAndConditions />} />
+        <Route path='/team' element={<Team />} />
+        <Route path='*' element={<Home />} />
+      </Routes>
       <Footer />
     </BrowserRouter>
   )

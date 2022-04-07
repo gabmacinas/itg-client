@@ -173,7 +173,7 @@ const Prediction = ({ user }) => {
         className='pt-5'
         data-bss-parallax-bg='true'
         data-pg-name='Main Section'
-        style={{ backgroundImage: 'url(' + 'assets/img/bg1.jpg' + ')', marginBottom: '100px' }}
+        style={{ backgroundImage: 'url(' + 'assets/img/BG3.svg' + ')' }}
       >
       <div className='container lh-lg text-center'>
           {isPredictionLoading
@@ -230,7 +230,7 @@ const Prediction = ({ user }) => {
                                   <>
                                   <div id='zero2' className='onStep fadeIn'>
                                     <div className='row'>
-                                      <div className="col-lg-12"><h5 style={{ textAlign: 'center', color: '#fee600' }}>Pick your Membership</h5></div>
+                                      <div className="col-lg-12 h-accent"><h4>Pick your Membership</h4></div>
                                         {inTheGameNfts?.map((nft, index) => {
                                           return (
                                             <div key={index} className='col-lg-2 col-md-4' onClick={() => setNftSelected(nft) } >
@@ -247,6 +247,7 @@ const Prediction = ({ user }) => {
                         </div>
 
                           <div className='game-row row'>
+                          <h4 className='h-accent text-center'>Enter Your Result</h4>
                           {prediction.matches?.map((game, matchIndex) => {
                             return (
                               <div className='col-md-6' key={matchIndex}>
@@ -286,7 +287,7 @@ const Prediction = ({ user }) => {
                           })}
                         </div>
                         {!isMatchOver && (
-                          <div className='p-4'>
+                          <div className='p-4 enter-result'>
                           <input
                               className='form-control pb-2'
                               id='txtEnterResult'
@@ -307,7 +308,7 @@ const Prediction = ({ user }) => {
                           <input
                             type='button'
                             id='submit'
-                            className='btn btn-light'
+                            className='btn btn-light mt-2'
                             value='Submit'
                             onClick={() => {
                               !isMatchOver && submitBetting(index, prediction)
@@ -342,7 +343,7 @@ const Prediction = ({ user }) => {
             <div className='row'>
               <div className='col-lg-12'>
                 <div className='text-center'>
-                  <h4 className='p-4' style={{ color: '#fee600' }}>Your Submissions</h4>
+                  <h4 className='p-4 h-accent'>Your Submissions</h4>
                   <div className='small-border'></div>
                 </div>
               </div>
