@@ -173,7 +173,6 @@ const Prediction = ({ user }) => {
         className='pt-5'
         data-bss-parallax-bg='true'
         data-pg-name='Main Section'
-        style={{ backgroundImage: 'url(' + 'assets/img/BG3.svg' + ')' }}
       >
       <div className='container lh-lg text-center'>
           {isPredictionLoading
@@ -240,7 +239,7 @@ const Prediction = ({ user }) => {
                                         })}
                                       </div>
                                     </div>
-                                    <div className="col-lg-12"><h5 className='h5 lh-base p-5 text-center'>{nftSelected !== null ? 'Membership selected: #' + nftSelected?.token_id : ''}</h5></div>
+                                    <div className="col-lg-12 membership-selected"><h5 className='h5 lh-base p-5 text-center'>{nftSelected !== null ? 'Membership selected: #' + nftSelected?.token_id : ''}</h5></div>
                                   </>
                                   )}
                           </div>
@@ -287,7 +286,7 @@ const Prediction = ({ user }) => {
                           })}
                         </div>
                         {!isMatchOver && (
-                          <div className='p-4 enter-result'>
+                          <div className='p-4 enter-result mb-2'>
                           <input
                               className='form-control pb-2'
                               id='txtEnterResult'
