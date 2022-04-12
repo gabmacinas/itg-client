@@ -160,7 +160,8 @@ function modalChallenge ({
             result: topShotSelected,
             user,
             challenge,
-            onSelected: topShotSelected
+            onSelected: topShotSelected,
+            nftSelected: nftSelected.token_id
           }
           await save(challengeBody, {
             onSuccess: async function () {
@@ -181,7 +182,6 @@ function modalChallenge ({
                 }
               })
               fetch()
-              handleClose()
             },
             onError: function (error) {
               MySwal.fire({
