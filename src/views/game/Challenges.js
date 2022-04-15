@@ -48,7 +48,6 @@ const Challenge = ({ user, isAuthenticated }) => {
       await fetch()
     }
     getSubmissions()
-    // console.log('challengeSubmissions', challengeSubmissions)
   }, [isAuthenticated])
 
   useEffect(() => {
@@ -147,7 +146,6 @@ const Challenge = ({ user, isAuthenticated }) => {
                                           : game.option3
                                       }
                                       onClick={(event) => {
-                                        console.log('clicked', event)
                                         const clonedData = [...onSelected]
                                         clonedData[index][matchIndex].selection = event.target.outerText
                                         setOnSelected(clonedData)

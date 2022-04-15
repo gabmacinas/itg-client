@@ -20,7 +20,6 @@ function BindAccount () {
       if (usernameUpdated) navigate('/')
     }
     getInformation()
-    // console.log('challengeSubmissions', challengeSubmissions)
   }, [isAuthenticated])
 
   const getDapperUser = async () => {
@@ -33,21 +32,16 @@ function BindAccount () {
       body: `{"requestType":"getUser","owner":"${username}"}`
     })
       .then((response) => {
-        // console.log(response);
         return response.json()
       })
       .then((data) => {
         try {
-          // setImgUrl(data.body.data.getPublicAccountWithAvatar.avatar.imageURL);
           if (data.body?.errors?.length > 0) {
-            console.log('has errors')
             setError({ message: 'Top shot account does not exist' })
           } else {
             bindAccount()
           }
         } catch (error) {
-          // navigate('/link');
-          console.log('error', error)
         }
       })
       .catch((err) => {
@@ -88,13 +82,11 @@ function BindAccount () {
       .request(options)
       .then((data) => {
         try {
-          console.log(data)
           Toast.fire({
             icon: 'success',
             title: 'Moments updated successfully.'
           })
         } catch (error) {
-          // navigate('/link');
           Toast.fire({
             icon: 'error',
             title: 'Encountered problem in refreshing moments. Please try again later.'
@@ -113,7 +105,6 @@ function BindAccount () {
       user.set('requestType', 'linkAccount')
       user.save().then(
         (result) => {
-          // console.log('saved', result);
           MySwal.fire({
             title: 'Success!',
             text: 'Account has been successfully linked',
@@ -127,7 +118,6 @@ function BindAccount () {
           })
         },
         (error) => {
-          // console.log('error', JSON.stringify(error));
           setError(error)
         }
       )

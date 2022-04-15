@@ -48,9 +48,7 @@ const Prediction = ({ user }) => {
   const submitBetting = (index, prediction) => {
     let hasEmptySubmission = false
 
-    console.log('on selected before submit', onSelected[index])
     if (onSelected[index].selection === '') hasEmptySubmission = true
-    console.log('hasEmptySubs', hasEmptySubmission)
 
     if (!hasEmptySubmission && nftSelected !== null) {
       MySwal.fire({
@@ -74,7 +72,6 @@ const Prediction = ({ user }) => {
           await save(predictionBody,
             {
               onSuccess: async function () {
-                // await authenticate({ signingMessage: JSON.stringify(predictionBody) })
                 MySwal.fire({
                   title: '<a href="https://twitter.com/InTheGameNFT?ref_src=twsrc%5Etfw" class="fa fa-twitter" data-show-count="true">Follow @InTheGameNFT</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>',
                   icon: 'success',
@@ -149,7 +146,6 @@ const Prediction = ({ user }) => {
       await getItgNfts()
     }
     getSubmissions()
-    // console.log('predictionSubmissions', predictionSubmissions)
   }, [isWeb3Enabled, isAuthenticated])
 
   useEffect(() => {
@@ -252,7 +248,6 @@ const Prediction = ({ user }) => {
                                           : game.option3
                                       }
                                       onClick={(event) => {
-                                        console.log('clicked', event)
                                         const clonedData = [...onSelected]
                                         clonedData[index][matchIndex].selection = event.target.outerText
                                         setOnSelected(clonedData)

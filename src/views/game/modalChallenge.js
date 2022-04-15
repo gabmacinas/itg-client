@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-// import InfiniteScroll from 'react-infinite-scroll-component'
 import { Modal, Button } from 'react-bootstrap'
 import axios from 'axios'
 import Swal from 'sweetalert2/dist/sweetalert2'
@@ -95,14 +94,12 @@ function modalChallenge ({
           .request(options)
           .then((data) => {
             try {
-              console.log(data)
               fetchMoments()
               Toast.fire({
                 icon: 'success',
                 title: 'Moments updated successfully.'
               })
             } catch (error) {
-              // navigate('/link');
               Toast.fire({
                 icon: 'error',
                 title: 'Encountered problem in refreshing moments. Please try again later.'
@@ -144,9 +141,7 @@ function modalChallenge ({
 
   const submitBetting = (index, challenge) => {
     let hasEmptySubmission = false
-    console.log('on selected before submit', onSelected[index])
     if (topShotSelected.length === 0) hasEmptySubmission = true
-    console.log('hasEmptySubs', hasEmptySubmission)
     if (
       !hasEmptySubmission &&
       nftSelected !== null &&
@@ -165,11 +160,6 @@ function modalChallenge ({
         }
       }).then(async (result) => {
         if (result.value) {
-          // get the name of the topshotSelected and push it in an array
-          // const topshotSelectedName = []
-          // for (let i = 0; i < topShotSelected.length; i++) {
-          //   topshotSelectedName.push(topShotSelected[i].title)
-          // }
           const challengeBody = {
             result: topShotSelected,
             user,
@@ -179,7 +169,6 @@ function modalChallenge ({
           }
           await save(challengeBody, {
             onSuccess: async function () {
-              // await authenticate({ signingMessage: JSON.stringify(challengeBody) })
               MySwal.fire({
                 title:
                   '<a href="https://twitter.com/InTheGameNFT?ref_src=twsrc%5Etfw" class="fa fa-twitter" data-show-count="true">Follow @InTheGameNFT</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>',
@@ -187,7 +176,6 @@ function modalChallenge ({
                 html: '<p>Your selection has been submitted!</p>',
                 showCloseButton: true,
                 focusConfirm: false,
-                // confirmButtonColor: '#fee600',
                 confirmButtonText: '<i class="fa fa-thumbs-up"></i> Great!',
                 confirmButtonAriaLabel: 'Thumbs up, great!',
                 cancelButtonAriaLabel: 'Thumbs down',

@@ -11,13 +11,10 @@ import contractAbi from './contractAbi.json'
 import Web3 from 'web3'
 import withReactContent from 'sweetalert2-react-content'
 import Swal from 'sweetalert2/dist/sweetalert2'
-// Pages
 import Handicap from './views/game/Handicap'
 import Challenges from './views/game/Challenges'
 import Prediction from './views/game/Prediction'
-
 import BindAccount from './views/utils/BindAccount'
-// import Collections = from './views/utils/Collections'
 import TermsAndConditions from './views/TermsAndConditions'
 import Team from './views/Team'
 
@@ -34,7 +31,6 @@ const contractAddress =
 const nftContract = new web3.eth.Contract(contractAbi.abi, contractAddress)
 
 function App () {
-  // const { authenticate, user, isAuthenticated, isAuthenticating, logout } = useMoralis()
   const {
     enableWeb3,
     Moralis,
@@ -75,8 +71,8 @@ function App () {
     setMintCost(await nftContract.methods.cost().call())
 
     if (isAuthenticated) {
-      setUserBalanceOf(await nftContract.methods.balanceOf(user.attributes.ethAddress).call())
-      setUserWhitelisted(await nftContract.methods.whitelistClaimed(user.attributes.ethAddress).call())
+      setUserBalanceOf(await nftContract.methods.balanceOf(user.attributes?.ethAddress).call())
+      setUserWhitelisted(await nftContract.methods.whitelistClaimed(user.attributes?.ethAddress).call())
     }
   }
 
@@ -87,8 +83,6 @@ function App () {
       const nonce = await web3.eth.getTransactionCount(user.attributes.ethAddress, 'latest')
       const gasPrice = await web3.eth.getGasPrice()
       const cost = Moralis.Units.FromWei(mintCost)
-      console.log('nonce', nonce, 'gasPrice', gasPrice, 'cost', cost)
-      console.log(user)
       const mintOptions = {
         from: user.attributes.ethAddress,
         gasPrice: gasPrice,
@@ -99,7 +93,6 @@ function App () {
         .mint(mintQty)
         .estimateGas(mintOptions)
         .then(async (gasLimit) => {
-          console.log('gasLimit', gasLimit)
           const mmkWeb3 = new Web3(metamaskWeb3.provider)
           const metamaskContract = new mmkWeb3.eth.Contract(contractAbi.abi, contractAddress)
           await metamaskContract.methods
@@ -112,7 +105,6 @@ function App () {
               gas: gasLimit
             })
             .then(async (receipt) => {
-              // console.log('receipt', receipt);
               setMinting(false)
               setTotalMint(Number(totalMint) + Number(mintQty))
               MySwal.fire({
@@ -135,7 +127,6 @@ function App () {
               await getContractInformation()
             })
             .catch((error) => {
-              console.log('error', error)
               setMinting(false)
               MySwal.fire({
                 title: 'Error',
@@ -147,7 +138,6 @@ function App () {
                 }
               })
             })
-          // console.log(response);
         })
         .catch((err) => {
           MySwal.fire({
