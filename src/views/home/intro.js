@@ -33,8 +33,8 @@ const Intro = ({
                 </strong>
               </h3>
               <p>
-                Using a crowd sourced prize pool, In the Game provides members with a chance to win thousands of dollars
-                worth of prizes each day by predicting the outcome of various sports results. In the Game also provides
+                Using a crowd sourced prize pool, In The Game provides members with a chance to win thousands of dollars
+                worth of prizes each day by predicting the outcome of various sports results. In The Game also provides
                 exclusive access to daily Top Shot challenges, rewarding collectors with cash, NFTs and high-end Top
                 Shot moments.
               </p>

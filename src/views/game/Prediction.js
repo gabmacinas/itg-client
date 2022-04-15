@@ -6,16 +6,13 @@ import Swal from 'sweetalert2/dist/sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import Moment from 'react-moment'
 import Countdown from 'react-countdown'
-import { useNavigate } from 'react-router-dom'
 
 const Prediction = ({ user }) => {
-  const navigate = useNavigate()
   const { enableWeb3, isAuthenticated, isWeb3Enabled } = useMoralis()
   const MySwal = withReactContent(Swal)
   const [onSelected, setOnSelected] = useState([])
   const [isMatchOver, setIsMatchOver] = useState(false)
   const [nftSelected, setNftSelected] = useState(null)
-  // const [inTheGameNfts, setInTheGameNfts] = useState([])
 
   const { data: inTheGameNfts, fetch: getItgNfts } = useMoralisCloudFunction('getItgNfts', {
     tokenAddress: process.env.REACT_APP_NODE_ENV === 'production'
@@ -51,9 +48,7 @@ const Prediction = ({ user }) => {
   const submitBetting = (index, prediction) => {
     let hasEmptySubmission = false
 
-    console.log('on selected before submit', onSelected[index])
     if (onSelected[index].selection === '') hasEmptySubmission = true
-    console.log('hasEmptySubs', hasEmptySubmission)
 
     if (!hasEmptySubmission && nftSelected !== null) {
       MySwal.fire({
@@ -77,7 +72,6 @@ const Prediction = ({ user }) => {
           await save(predictionBody,
             {
               onSuccess: async function () {
-                // await authenticate({ signingMessage: JSON.stringify(predictionBody) })
                 MySwal.fire({
                   title: '<a href="https://twitter.com/InTheGameNFT?ref_src=twsrc%5Etfw" class="fa fa-twitter" data-show-count="true">Follow @InTheGameNFT</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>',
                   icon: 'success',
@@ -148,13 +142,10 @@ const Prediction = ({ user }) => {
   useEffect(() => {
     if (!isAuthenticated) return null
     const getSubmissions = async () => {
-      const usernameUpdated = await user.get('usernameUpdated') || false
-      if (!usernameUpdated) return navigate('/link')
       await fetch()
       await getItgNfts()
     }
     getSubmissions()
-    // console.log('predictionSubmissions', predictionSubmissions)
   }, [isWeb3Enabled, isAuthenticated])
 
   useEffect(() => {
@@ -221,11 +212,7 @@ const Prediction = ({ user }) => {
 
                           <div className='row'>
                           <div className='col-lg-12'>
-                              {isMatchOver
-                                ? (
-                                <h2>Match already started</h2>
-                                  )
-                                : (
+                              {!isMatchOver && (
                                   <>
                                   <div id='zero2' className='onStep fadeIn'>
                                     <div className='row'>
@@ -240,13 +227,13 @@ const Prediction = ({ user }) => {
                                       </div>
                                     </div>
                                     <div className="col-lg-12 membership-selected"><h5 className='h5 lh-base p-5 text-center'>{nftSelected !== null ? 'Membership selected: #' + nftSelected?.token_id : ''}</h5></div>
+                                    <h4 className='h-accent text-center'>Enter Your Result</h4>
                                   </>
-                                  )}
+                              )}
                           </div>
                         </div>
 
                           <div className='game-row row'>
-                          <h4 className='h-accent text-center'>Enter Your Result</h4>
                           {prediction.matches?.map((game, matchIndex) => {
                             return (
                               <div className='col-md-6' key={matchIndex}>
@@ -261,7 +248,6 @@ const Prediction = ({ user }) => {
                                           : game.option3
                                       }
                                       onClick={(event) => {
-                                        console.log('clicked', event)
                                         const clonedData = [...onSelected]
                                         clonedData[index][matchIndex].selection = event.target.outerText
                                         setOnSelected(clonedData)

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-// import InfiniteScroll from 'react-infinite-scroll-component'
 import { Modal, Button } from 'react-bootstrap'
 import axios from 'axios'
 import Swal from 'sweetalert2/dist/sweetalert2'
@@ -53,53 +52,65 @@ function modalChallenge ({
 
   const refreshMoments = async () => {
     if (user === null) return false
-    const Toast = Swal.mixin({
-      toast: true,
-      position: 'top-right',
-      iconColor: 'white',
-      customClass: {
-        popup: 'colored-toast'
-      },
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: true
-    })
-    Toast.fire({
+    MySwal.fire({
+      title: 'Refresh Moments',
+      text: 'This might take a while, are you sure you want to refresh moments?',
       icon: 'info',
-      title: 'Refreshing moments. It might take a while.'
-    })
-    const url = process.env.REACT_APP_NODE_ENV === 'production' ? process.env.REACT_APP_MAINNET_API : process.env.REACT_APP_TESTNET_API
-    const options = {
-      method: 'POST',
-      url,
-      headers: { 'Content-Type': 'application/json' },
-      data: {
-        requestType: 'scrape',
-        owner: user.attributes.username
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      confirmButtonColor: '#FEE603',
+      customClass: {
+        confirmButton: 'btn btn-primary'
       }
-    }
-
-    axios
-      .request(options)
-      .then((data) => {
-        try {
-          console.log(data)
-          fetchMoments()
-          Toast.fire({
-            icon: 'success',
-            title: 'Moments updated successfully.'
-          })
-        } catch (error) {
-          // navigate('/link');
-          Toast.fire({
-            icon: 'error',
-            title: 'Encountered problem in refreshing moments. Please try again later.'
-          })
+    }).then((result) => {
+      if (result.value) {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-right',
+          iconColor: 'white',
+          customClass: {
+            popup: 'colored-toast'
+          },
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true
+        })
+        Toast.fire({
+          icon: 'info',
+          title: 'Refreshing moments. It might take a while.'
+        })
+        const url = process.env.REACT_APP_NODE_ENV === 'production' ? process.env.REACT_APP_MAINNET_API : process.env.REACT_APP_TESTNET_API
+        const options = {
+          method: 'POST',
+          url,
+          headers: { 'Content-Type': 'application/json', Authorization: `${user.attributes.sessionToken}` },
+          data: {
+            requestType: 'scrape',
+            owner: user.attributes.username
+          }
         }
-      })
-      .catch((err) => {
-        console.error(err)
-      })
+
+        axios
+          .request(options)
+          .then((data) => {
+            try {
+              fetchMoments()
+              Toast.fire({
+                icon: 'success',
+                title: 'Moments updated successfully.'
+              })
+            } catch (error) {
+              Toast.fire({
+                icon: 'error',
+                title: 'Encountered problem in refreshing moments. Please try again later.'
+              })
+            }
+          })
+          .catch((err) => {
+            console.error(err)
+          })
+      }
+    })
   }
 
   const pushTopShotSelected = async (nftSelected) => {
@@ -130,9 +141,7 @@ function modalChallenge ({
 
   const submitBetting = (index, challenge) => {
     let hasEmptySubmission = false
-    console.log('on selected before submit', onSelected[index])
     if (topShotSelected.length === 0) hasEmptySubmission = true
-    console.log('hasEmptySubs', hasEmptySubmission)
     if (
       !hasEmptySubmission &&
       nftSelected !== null &&
@@ -151,20 +160,15 @@ function modalChallenge ({
         }
       }).then(async (result) => {
         if (result.value) {
-          // get the name of the topshotSelected and push it in an array
-          // const topshotSelectedName = []
-          // for (let i = 0; i < topShotSelected.length; i++) {
-          //   topshotSelectedName.push(topShotSelected[i].title)
-          // }
           const challengeBody = {
             result: topShotSelected,
             user,
             challenge,
-            onSelected: topShotSelected
+            onSelected: topShotSelected,
+            nftSelected: nftSelected.token_id
           }
           await save(challengeBody, {
             onSuccess: async function () {
-              // await authenticate({ signingMessage: JSON.stringify(challengeBody) })
               MySwal.fire({
                 title:
                   '<a href="https://twitter.com/InTheGameNFT?ref_src=twsrc%5Etfw" class="fa fa-twitter" data-show-count="true">Follow @InTheGameNFT</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>',
@@ -172,7 +176,6 @@ function modalChallenge ({
                 html: '<p>Your selection has been submitted!</p>',
                 showCloseButton: true,
                 focusConfirm: false,
-                // confirmButtonColor: '#fee600',
                 confirmButtonText: '<i class="fa fa-thumbs-up"></i> Great!',
                 confirmButtonAriaLabel: 'Thumbs up, great!',
                 cancelButtonAriaLabel: 'Thumbs down',
@@ -181,7 +184,6 @@ function modalChallenge ({
                 }
               })
               fetch()
-              handleClose()
             },
             onError: function (error) {
               MySwal.fire({

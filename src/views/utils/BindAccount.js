@@ -20,7 +20,6 @@ function BindAccount () {
       if (usernameUpdated) navigate('/')
     }
     getInformation()
-    // console.log('challengeSubmissions', challengeSubmissions)
   }, [isAuthenticated])
 
   const getDapperUser = async () => {
@@ -29,27 +28,20 @@ function BindAccount () {
     const url = process.env.REACT_APP_NODE_ENV === 'production' ? process.env.REACT_APP_MAINNET_API : process.env.REACT_APP_TESTNET_API
     await fetch(url, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json', Authorization: `${user.attributes.sessionToken}` },
       body: `{"requestType":"getUser","owner":"${username}"}`
     })
       .then((response) => {
-        // console.log(response);
         return response.json()
       })
       .then((data) => {
         try {
-          // setImgUrl(data.body.data.getPublicAccountWithAvatar.avatar.imageURL);
           if (data.body?.errors?.length > 0) {
-            console.log('has errors')
             setError({ message: 'Top shot account does not exist' })
           } else {
             bindAccount()
           }
         } catch (error) {
-          // navigate('/link');
-          console.log('error', error)
         }
       })
       .catch((err) => {
@@ -79,7 +71,7 @@ function BindAccount () {
     const options = {
       method: 'POST',
       url,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', Authorization: `${user.attributes.sessionToken}` },
       data: {
         requestType: 'scrape',
         owner: user.attributes.username
@@ -90,13 +82,11 @@ function BindAccount () {
       .request(options)
       .then((data) => {
         try {
-          console.log(data)
           Toast.fire({
             icon: 'success',
             title: 'Moments updated successfully.'
           })
         } catch (error) {
-          // navigate('/link');
           Toast.fire({
             icon: 'error',
             title: 'Encountered problem in refreshing moments. Please try again later.'
@@ -115,7 +105,6 @@ function BindAccount () {
       user.set('requestType', 'linkAccount')
       user.save().then(
         (result) => {
-          // console.log('saved', result);
           MySwal.fire({
             title: 'Success!',
             text: 'Account has been successfully linked',
@@ -129,7 +118,6 @@ function BindAccount () {
           })
         },
         (error) => {
-          // console.log('error', JSON.stringify(error));
           setError(error)
         }
       )
@@ -157,8 +145,8 @@ function BindAccount () {
                 </strong>
               </h3>
               <p>
-                Using a crowd sourced prize pool, In the Game provides members with a chance to win thousands of dollars
-                worth of prizes each day by predicting the outcome of various sports results. In the Game also provides
+                Using a crowd sourced prize pool, In The Game provides members with a chance to win thousands of dollars
+                worth of prizes each day by predicting the outcome of various sports results. In The Game also provides
                 exclusive access to daily Top Shot challenges, rewarding collectors with cash, NFTs and high-end Top
                 Shot moments.
               </p>

@@ -6,10 +6,8 @@ import Swal from 'sweetalert2/dist/sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import Moment from 'react-moment'
 import Countdown from 'react-countdown'
-import { useNavigate } from 'react-router-dom'
 
 const Handicap = ({ user }) => {
-  const navigate = useNavigate()
   const { isAuthenticated, enableWeb3, isWeb3Enabled } = useMoralis()
   const MySwal = withReactContent(Swal)
   const [onSelected, setOnSelected] = useState([])
@@ -70,7 +68,6 @@ const Handicap = ({ user }) => {
               stringResult += ',' + element.selection
             }
           })
-          console.log('token_id:', nftSelected.token_id)
           const handicapBody = {
             user,
             result: stringResult,
@@ -130,7 +127,6 @@ const Handicap = ({ user }) => {
         const matches = JSON.parse(element.handicapMatches)
         const matchArray = []
         const now = new Date()
-        console.log('matchDateElement', result.matchDate.iso)
         const matchDate = new Date(result.matchDate.iso)
         const diff = matchDate.getTime() - now.getTime()
         const diffMinutes = Math.ceil(diff / (1000 * 60))
@@ -157,18 +153,11 @@ const Handicap = ({ user }) => {
   useEffect(() => {
     if (!isAuthenticated) return null
     const getSubmissions = async () => {
-      const usernameUpdated = await user.get('usernameUpdated') || false
-      if (!usernameUpdated) return navigate('/link')
       getItgNfts()
       fetch()
     }
     getSubmissions()
-    console.log('handicapSubmissions', handicapSubmissions)
   }, [isWeb3Enabled, isAuthenticated])
-
-  useEffect(() => {
-    console.log('onSelected', onSelected)
-  }, [onSelected])
 
   return (
     <>
@@ -264,7 +253,6 @@ const Handicap = ({ user }) => {
                                           : game.option3
                                       }
                                       onClick={(event) => {
-                                        console.log('clicked', event)
                                         const clonedData = [...onSelected]
                                         clonedData[index][matchIndex].selection = event.target.outerText
                                         setOnSelected(clonedData)
