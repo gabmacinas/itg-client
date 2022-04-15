@@ -53,53 +53,67 @@ function modalChallenge ({
 
   const refreshMoments = async () => {
     if (user === null) return false
-    const Toast = Swal.mixin({
-      toast: true,
-      position: 'top-right',
-      iconColor: 'white',
-      customClass: {
-        popup: 'colored-toast'
-      },
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: true
-    })
-    Toast.fire({
+    MySwal.fire({
+      title: 'Refresh Moments',
+      text: 'This might take a while, are you sure you want to refresh moments?',
       icon: 'info',
-      title: 'Refreshing moments. It might take a while.'
-    })
-    const url = process.env.REACT_APP_NODE_ENV === 'production' ? process.env.REACT_APP_MAINNET_API : process.env.REACT_APP_TESTNET_API
-    const options = {
-      method: 'POST',
-      url,
-      headers: { 'Content-Type': 'application/json' },
-      data: {
-        requestType: 'scrape',
-        owner: user.attributes.username
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      confirmButtonColor: '#FEE603',
+      customClass: {
+        confirmButton: 'btn btn-primary'
       }
-    }
-
-    axios
-      .request(options)
-      .then((data) => {
-        try {
-          console.log(data)
-          fetchMoments()
-          Toast.fire({
-            icon: 'success',
-            title: 'Moments updated successfully.'
-          })
-        } catch (error) {
-          // navigate('/link');
-          Toast.fire({
-            icon: 'error',
-            title: 'Encountered problem in refreshing moments. Please try again later.'
-          })
+    }).then((result) => {
+      if (result.value) {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-right',
+          iconColor: 'white',
+          customClass: {
+            popup: 'colored-toast'
+          },
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true
+        })
+        Toast.fire({
+          icon: 'info',
+          title: 'Refreshing moments. It might take a while.'
+        })
+        const url = process.env.REACT_APP_NODE_ENV === 'production' ? process.env.REACT_APP_MAINNET_API : process.env.REACT_APP_TESTNET_API
+        const options = {
+          method: 'POST',
+          url,
+          headers: { 'Content-Type': 'application/json', Authorization: `${user.attributes.sessionToken}` },
+          data: {
+            requestType: 'scrape',
+            owner: user.attributes.username
+          }
         }
-      })
-      .catch((err) => {
-        console.error(err)
-      })
+
+        axios
+          .request(options)
+          .then((data) => {
+            try {
+              console.log(data)
+              fetchMoments()
+              Toast.fire({
+                icon: 'success',
+                title: 'Moments updated successfully.'
+              })
+            } catch (error) {
+              // navigate('/link');
+              Toast.fire({
+                icon: 'error',
+                title: 'Encountered problem in refreshing moments. Please try again later.'
+              })
+            }
+          })
+          .catch((err) => {
+            console.error(err)
+          })
+      }
+    })
   }
 
   const pushTopShotSelected = async (nftSelected) => {
