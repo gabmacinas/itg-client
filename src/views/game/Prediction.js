@@ -221,11 +221,7 @@ const Prediction = ({ user }) => {
 
                           <div className='row'>
                           <div className='col-lg-12'>
-                              {isMatchOver
-                                ? (
-                                <h2>Match already started</h2>
-                                  )
-                                : (
+                              {!isMatchOver && (
                                   <>
                                   <div id='zero2' className='onStep fadeIn'>
                                     <div className='row'>
@@ -240,13 +236,13 @@ const Prediction = ({ user }) => {
                                       </div>
                                     </div>
                                     <div className="col-lg-12 membership-selected"><h5 className='h5 lh-base p-5 text-center'>{nftSelected !== null ? 'Membership selected: #' + nftSelected?.token_id : ''}</h5></div>
+                                    <h4 className='h-accent text-center'>Enter Your Result</h4>
                                   </>
-                                  )}
+                              )}
                           </div>
                         </div>
 
                           <div className='game-row row'>
-                          <h4 className='h-accent text-center'>Enter Your Result</h4>
                           {prediction.matches?.map((game, matchIndex) => {
                             return (
                               <div className='col-md-6' key={matchIndex}>
