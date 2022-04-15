@@ -29,9 +29,7 @@ function BindAccount () {
     const url = process.env.REACT_APP_NODE_ENV === 'production' ? process.env.REACT_APP_MAINNET_API : process.env.REACT_APP_TESTNET_API
     await fetch(url, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json', Authorization: `${user.attributes.sessionToken}` },
       body: `{"requestType":"getUser","owner":"${username}"}`
     })
       .then((response) => {
@@ -79,7 +77,7 @@ function BindAccount () {
     const options = {
       method: 'POST',
       url,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', Authorization: `${user.attributes.sessionToken}` },
       data: {
         requestType: 'scrape',
         owner: user.attributes.username
