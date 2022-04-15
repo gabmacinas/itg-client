@@ -1,4 +1,5 @@
 import React from 'react'
+import { LinkContainer } from 'react-router-bootstrap'
 
 export default function footer () {
   return (
@@ -9,21 +10,30 @@ export default function footer () {
               <h3 className='footer-head'>About</h3>
               <ul>
                 <li>
-                  <a href='#'>Company</a>
+                <LinkContainer to='/'>
+                  <a>FAQs</a>
+                </LinkContainer>
                 </li>
                 <li>
-                  <a href='#'>Team</a>
+                  <LinkContainer to='/team'>
+                  <a>Team</a>
+                  </LinkContainer>
                 </li>
                 <li>
-                  <a href='#'>Careers</a>
+                  <LinkContainer to='/terms'>
+                  <a>Terms And Conditions</a>
+                  </LinkContainer>
+                </li>
+                <li>
+                  <a href='mailto:team@inthegamenft.io'>team@inthegamenft.io</a>
                 </li>
               </ul>
             </div>
             <div className='col-md-9 item text'>
               <h3 className='footer-head'>In The Game</h3>
               <p>
-                Using a crowd sourced prize pool, In the Game provides members with a chance to win thousands of dollars
-                worth of prizes each day by predicting the outcome of various sports results. In the Game also provides
+                Using a crowd sourced prize pool, In The Game provides members with a chance to win thousands of dollars
+                worth of prizes each day by predicting the outcome of various sports results. In The Game also provides
                 exclusive access to daily Top Shot challenges, rewarding collectors with cash, NFTs and high-end Top
                 Shot moments.
               </p>
@@ -32,7 +42,7 @@ export default function footer () {
               <a className='social-icons' href='#'>
                 <i className='icon ion-social-facebook'></i>
               </a>
-              <a className='social-icons' href='#'>
+              <a className='social-icons' href='https://twitter.com/InTheGameNFT'>
                 <i className='icon ion-social-twitter'></i>
               </a>
               <a className='social-icons' href='#'>

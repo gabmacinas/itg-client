@@ -1,7 +1,6 @@
 
 /* Pinegrow generated Theme Init Begin */
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Montserrat:100,200,300,400,500,600,700,800,900|Open+Sans:300,400,600,700,800|Montserrat:100,200,300,400,500,600,700,800,900|Montserrat:100,200,300,400,500,600,700,800,900|Montserrat:100,200,300,400,500,600,700,800,900|Montserrat:100,200,300,400,500,600,700,800,900|Montserrat:100,200,300,400,500,600,700,800,900&display=swap');
-
 $primary: #fee603;
 $secondary: #eabf08;
 $info: #0dcaf0;
@@ -54,31 +53,6 @@ h5 {
     min-height: 100vh;
 }
 
-    /* Pinegrow generated Theme Init End */
-/* Bootstrap theme customized with Pinegrow Web Editor */
-/* Vars go before the @import */
-
-/* Click on the Uncomment icon in the Style panel to uncomment and customize the variables: */
-
-//$primary: #007bff;
-//$secondary: #6c757d;
-//$success: #28a745;
-//$info: #17a2b8;
-//$warning: #ffc107;
-//$danger: #dc3545;
-//$light: #f8f9fa;
-//$dark: #343a40;
-
-//$body-bg: #ffffff;
-//$body-color: #212529;
-
-/* Import web fonts - Must come before any CSS rules. Refresh the Page view after making changes to import statements. */
-//@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;400;700&family=Playfair+Display:wght@400;700;900&display=swap');
-
-//$font-family-sans-serif: 'Lato', sans-serif;
-//$headings-font-family: 'Playfair Display', serif;
-
-
 /* Custom CSS rules come here */
 
 /* Pinegrow generated Additional Rules Begin */
@@ -112,4 +86,6 @@ h5 {
     /* Pinegrow generated Additional Rules End */
 
 // @import "~bootstrap/scss/bootstrap";
+// @import '@sweetalert2/theme-dark/dark.scss';
+
 

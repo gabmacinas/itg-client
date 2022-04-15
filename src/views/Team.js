@@ -1,12 +1,12 @@
 import React from 'react'
 import DOMPurify from 'dompurify'
-import faqHTML from '.././html/FAQ.html'
-const mySafeHTML = DOMPurify.sanitize(faqHTML)
+import teamHTML from './html/team.html'
+const mySafeHTML = DOMPurify.sanitize(teamHTML)
 
-function Faq () {
+function Team () {
   return (
   <div dangerouslySetInnerHTML={{ __html: mySafeHTML }}></div>
   )
 }
 
-export default Faq
+export default Team
