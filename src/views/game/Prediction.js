@@ -6,16 +6,13 @@ import Swal from 'sweetalert2/dist/sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import Moment from 'react-moment'
 import Countdown from 'react-countdown'
-import { useNavigate } from 'react-router-dom'
 
 const Prediction = ({ user }) => {
-  const navigate = useNavigate()
   const { enableWeb3, isAuthenticated, isWeb3Enabled } = useMoralis()
   const MySwal = withReactContent(Swal)
   const [onSelected, setOnSelected] = useState([])
   const [isMatchOver, setIsMatchOver] = useState(false)
   const [nftSelected, setNftSelected] = useState(null)
-  // const [inTheGameNfts, setInTheGameNfts] = useState([])
 
   const { data: inTheGameNfts, fetch: getItgNfts } = useMoralisCloudFunction('getItgNfts', {
     tokenAddress: process.env.REACT_APP_NODE_ENV === 'production'
@@ -148,8 +145,6 @@ const Prediction = ({ user }) => {
   useEffect(() => {
     if (!isAuthenticated) return null
     const getSubmissions = async () => {
-      const usernameUpdated = await user.get('usernameUpdated') || false
-      if (!usernameUpdated) return navigate('/link')
       await fetch()
       await getItgNfts()
     }

@@ -6,10 +6,8 @@ import Swal from 'sweetalert2/dist/sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import Moment from 'react-moment'
 import Countdown from 'react-countdown'
-import { useNavigate } from 'react-router-dom'
 
 const Handicap = ({ user }) => {
-  const navigate = useNavigate()
   const { isAuthenticated, enableWeb3, isWeb3Enabled } = useMoralis()
   const MySwal = withReactContent(Swal)
   const [onSelected, setOnSelected] = useState([])
@@ -157,8 +155,6 @@ const Handicap = ({ user }) => {
   useEffect(() => {
     if (!isAuthenticated) return null
     const getSubmissions = async () => {
-      const usernameUpdated = await user.get('usernameUpdated') || false
-      if (!usernameUpdated) return navigate('/link')
       getItgNfts()
       fetch()
     }
