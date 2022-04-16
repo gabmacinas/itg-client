@@ -31,7 +31,7 @@ function modalChallenge ({
     }
   )
 
-  const { data: inTheGameNfts, fetch: getItgNfts } = useMoralisCloudFunction(
+  const { data: inTheGameNfts, fetch: getItgNfts, isLoading: isMembershipLoading } = useMoralisCloudFunction(
     'getItgNfts',
     {
       tokenAddress:
@@ -248,7 +248,19 @@ function modalChallenge ({
             <div className='col-md-12'>
               <h4 className='h4 lh-base p-5 text-center text-light' style={{ color: '#fee600' }}>Pick Your Membership</h4>
             </div>
-            <div className='col-md-12'>
+              {isMembershipLoading
+                ? (
+                  <>
+                    {/* {create a bootstrap center spinner} */}
+                    <div className='d-flex justify-content-center mb-5'>
+                      <div className='spinner-border text-light' role='status'>
+                        <span className='sr-only'>Loading...</span>
+                      </div>
+                    </div>
+                  </>
+                  )
+                : (
+                  <div className='col-md-12'>
               <div className='row'>
                 {inTheGameNfts?.map((nft, index) => {
                   return (
@@ -258,12 +270,9 @@ function modalChallenge ({
                   )
                 })}
               </div>
-              <div className='col-lg-12'>
-                <h5 className='h5 lh-base p-5 text-center'>
-                  {nftSelected !== null ? 'Membership selected: #' + nftSelected?.token_id : ''}
-                </h5>
-              </div>
+              <div className="col-lg-12 membership-selected"><h5 className='h5 lh-base p-5 text-center'>{nftSelected !== null ? 'Membership selected: #' + nftSelected?.token_id : ''}</h5></div>
             </div>
+                  )}
             <div className='col-lg-12 text-center pb-4'>
               <Button
                 variant='btn btn-light'

@@ -69,7 +69,7 @@ const Intro = ({
                           )
                         : (
                   <h3 className='fw-bold' id='sub-head'>
-                    Mint Closed
+                    Coming Soon!
                   </h3>
                           )
                     )
