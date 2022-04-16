@@ -14,7 +14,7 @@ const Prediction = ({ user }) => {
   const [isMatchOver, setIsMatchOver] = useState(false)
   const [nftSelected, setNftSelected] = useState(null)
 
-  const { data: inTheGameNfts, fetch: getItgNfts } = useMoralisCloudFunction('getItgNfts', {
+  const { data: inTheGameNfts, fetch: getItgNfts, isLoading: isMembershipLoading } = useMoralisCloudFunction('getItgNfts', {
     tokenAddress: process.env.REACT_APP_NODE_ENV === 'production'
       ? process.env.REACT_APP_MAINNET_CONTRACT_ADDRESS
       : process.env.REACT_APP_TESTNET_CONTRACT_ADDRESS,
@@ -217,13 +217,25 @@ const Prediction = ({ user }) => {
                                   <div id='zero2' className='onStep fadeIn'>
                                     <div className='row'>
                                       <div className="col-lg-12 h-accent"><h4>Pick your Membership</h4></div>
-                                        {inTheGameNfts?.map((nft, index) => {
-                                          return (
-                                            <div key={index} className='col-lg-2 col-md-4' onClick={() => setNftSelected(nft) } >
-                                              <p className='nft__item'>{'#' + nft.token_id + ' Membership'}</p>
+                                      {isMembershipLoading
+                                        ? (
+                                          <div className='d-flex justify-content-center mb-5'>
+                                            <div className='spinner-border text-light' role='status'>
+                                              <span className='sr-only'>Loading...</span>
                                             </div>
+                                          </div>
                                           )
-                                        })}
+                                        : (
+                                          <>
+                                          {inTheGameNfts?.map((nft, index) => {
+                                            return (
+                                              <div key={index} className='col-lg-2 col-md-4' onClick={() => setNftSelected(nft) } >
+                                                <p className='nft__item'>{'#' + nft.token_id + ' Membership'}</p>
+                                              </div>
+                                            )
+                                          })}
+                                          </>
+                                          )}
                                       </div>
                                     </div>
                                     <div className="col-lg-12 membership-selected"><h5 className='h5 lh-base p-5 text-center'>{nftSelected !== null ? 'Membership selected: #' + nftSelected?.token_id : ''}</h5></div>
