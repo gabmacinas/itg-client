@@ -16,7 +16,8 @@ function modalChallenge ({
   handleClose,
   save,
   isAuthenticated,
-  content
+  content,
+  signMessage
 }) {
   const { enableWeb3 } = useMoralis()
   const MySwal = withReactContent(Swal)
@@ -56,7 +57,7 @@ function modalChallenge ({
     MySwal.fire({
       title: 'Refresh Moments',
       text: 'This might take a while, are you sure you want to refresh moments?',
-      icon: 'info',
+      icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes',
       confirmButtonColor: '#FEE603',
@@ -179,40 +180,45 @@ function modalChallenge ({
         }
       }).then(async (result) => {
         if (result.value) {
-          const challengeBody = {
-            result: topShotSelected,
-            user,
-            challenge,
-            onSelected: topShotSelected,
-            nftSelected: nftSelected.token_id
-          }
-          await save(challengeBody, {
-            onSuccess: async function () {
-              MySwal.fire({
-                title: 'Submission successful!',
-                icon: 'success',
-                text: 'Share your submission with your friends on Twitter!',
-                showCloseButton: true,
-                focusConfirm: false,
-                confirmButtonText: `<i class="icon ion-social-twitter"></i> ${content?.[0]?.attributes?.tweetButton || 'Tweet'}`
-              }).then((result) => {
-                if (result.value) {
-                  newTweetHandler()
-                }
-              })
-              fetch()
-            },
-            onError: function (error) {
-              MySwal.fire({
-                title: 'Error!',
-                text: error.message,
-                icon: 'warning',
-                customClass: {
-                  confirmButton: 'btn btn-primary'
-                }
-              })
+          const signed = await signMessage({ message: JSON.stringify(topShotSelected) })
+          if (signed) {
+            const challengeBody = {
+              result: topShotSelected,
+              user,
+              challenge,
+              onSelected: topShotSelected,
+              nftSelected: nftSelected.token_id,
+              signature: signed.signature,
+              address: signed.address
             }
-          })
+            await save(challengeBody, {
+              onSuccess: async function () {
+                MySwal.fire({
+                  title: 'Submission successful!',
+                  icon: 'success',
+                  text: 'Share your submission with your friends on Twitter!',
+                  showCloseButton: true,
+                  focusConfirm: false,
+                  confirmButtonText: `<i class="icon ion-social-twitter"></i> ${content?.[0]?.attributes?.tweetButton || 'Tweet'}`
+                }).then((result) => {
+                  if (result.value) {
+                    newTweetHandler()
+                  }
+                })
+                fetch()
+              },
+              onError: function (error) {
+                MySwal.fire({
+                  title: 'Error!',
+                  text: error.message,
+                  icon: 'warning',
+                  customClass: {
+                    confirmButton: 'btn btn-primary'
+                  }
+                })
+              }
+            })
+          }
         }
       })
     } else {
@@ -220,8 +226,9 @@ function modalChallenge ({
         title: 'Notice!',
         text: 'Make sure to put your selection and membership!',
         icon: 'warning',
+        confirmButtonColor: '#FEE603',
         customClass: {
-          confirmButton: 'btn-swal'
+          confirmButton: 'btn btn-primary'
         }
       })
     }

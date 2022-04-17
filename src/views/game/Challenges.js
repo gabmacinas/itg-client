@@ -7,7 +7,7 @@ import ModalChallenge from './modalChallenge'
 import Countdown from 'react-countdown'
 import { useNavigate } from 'react-router-dom'
 
-const Challenge = ({ user, isAuthenticated, content }) => {
+const Challenge = ({ user, isAuthenticated, content, signMessage, verifyMessage }) => {
   const navigate = useNavigate()
   const [onSelected, setOnSelected] = useState([])
   const [isMatchOver, setIsMatchOver] = useState(false)
@@ -193,6 +193,7 @@ const Challenge = ({ user, isAuthenticated, content }) => {
                                 isAuthenticated={isAuthenticated}
                                 save={save}
                                 content={content}
+                                signMessage={signMessage}
                               />
                             </div>
                           )}
@@ -249,6 +250,7 @@ const Challenge = ({ user, isAuthenticated, content }) => {
                       <th scope='col'>Result</th>
                       <th scope='col'>Status</th>
                       <th scope='col'>Date</th>
+                      <th scope='col'>Verified</th>
                     </tr>
                     <tr></tr>
                   </thead>
@@ -283,6 +285,7 @@ const Challenge = ({ user, isAuthenticated, content }) => {
                           <td>
                             <Moment fromNow>{submission?.createdAt}</Moment>
                           </td>
+                          <td><i className={verifyMessage({ message: JSON.stringify(submission?.result), address: submission?.address, signature: submission?.signature }) ? 'fa fa-check' : 'fa fa-times'} ></i></td>
                         </tr>
                       )
                     })}
@@ -300,7 +303,9 @@ const Challenge = ({ user, isAuthenticated, content }) => {
 Challenge.propTypes = {
   user: PropTypes.object,
   content: PropTypes.array,
-  isAuthenticated: PropTypes.bool
+  isAuthenticated: PropTypes.bool,
+  signMessage: PropTypes.func,
+  verifyMessage: PropTypes.func
 }
 
 export default Challenge
