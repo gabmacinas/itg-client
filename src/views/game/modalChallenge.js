@@ -15,7 +15,8 @@ function modalChallenge ({
   isMatchOver,
   handleClose,
   save,
-  isAuthenticated
+  isAuthenticated,
+  content
 }) {
   const { enableWeb3 } = useMoralis()
   const MySwal = withReactContent(Swal)
@@ -139,6 +140,24 @@ function modalChallenge ({
     setTopshotSelected(topShotSelected.filter((nft) => nft !== nftSelected))
   }
 
+  const newTweetHandler = () => {
+    let str = content[0].attributes.tweetMessageHandler
+
+    const stringResult = ''
+
+    const mapObj = {
+      USER_RESULT: stringResult
+    }
+    const re = new RegExp(Object.keys(mapObj).join('|'), 'gi')
+    str = str.replace(re, function (matched) {
+      return mapObj[matched.toLowerCase()]
+    })
+
+    const tweetIntent = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(str)
+    const newWindow = window.open(tweetIntent, '_blank', 'noopener,noreferrer')
+    if (newWindow) newWindow.opener = null
+  }
+
   const submitBetting = (index, challenge) => {
     let hasEmptySubmission = false
     if (topShotSelected.length === 0) hasEmptySubmission = true
@@ -170,17 +189,15 @@ function modalChallenge ({
           await save(challengeBody, {
             onSuccess: async function () {
               MySwal.fire({
-                title:
-                  '<a href="https://twitter.com/InTheGameNFT?ref_src=twsrc%5Etfw" class="fa fa-twitter" data-show-count="true">Follow @InTheGameNFT</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                title: 'Submission successful!',
                 icon: 'success',
-                html: '<p>Your selection has been submitted!</p>',
+                text: 'Share your submission with your friends on Twitter!',
                 showCloseButton: true,
                 focusConfirm: false,
-                confirmButtonText: '<i class="fa fa-thumbs-up"></i> Great!',
-                confirmButtonAriaLabel: 'Thumbs up, great!',
-                cancelButtonAriaLabel: 'Thumbs down',
-                customClass: {
-                  confirmButton: 'btn btn-primary'
+                confirmButtonText: `<i class="icon ion-social-twitter"></i> ${content?.[0]?.attributes?.tweetButton || 'Tweet'}`
+              }).then((result) => {
+                if (result.value) {
+                  newTweetHandler()
                 }
               })
               fetch()

@@ -71,6 +71,7 @@ function App () {
     setMintCost(await nftContract.methods.cost().call())
 
     if (isAuthenticated) {
+      if (user.attributes.ethAddress === null || user.attributes.ethAddress === undefined) return null
       setUserBalanceOf(await nftContract.methods.balanceOf(user.attributes?.ethAddress).call())
       setUserWhitelisted(await nftContract.methods.whitelistClaimed(user.attributes?.ethAddress).call())
     }
