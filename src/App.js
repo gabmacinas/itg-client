@@ -17,6 +17,7 @@ import Prediction from './views/game/Prediction'
 import BindAccount from './views/utils/BindAccount'
 import TermsAndConditions from './views/TermsAndConditions'
 import Team from './views/Team'
+import { ethers } from 'ethers'
 
 const provider = new Web3.providers.HttpProvider(
   process.env.REACT_APP_NODE_ENV === 'production'
@@ -163,6 +164,39 @@ function App () {
     }
   }
 
+  const verifyMessage = ({ message, address, signature }) => {
+    try {
+      const signerAddr = ethers.utils.verifyMessage(message, signature)
+      if (signerAddr !== address) {
+        return false
+      }
+
+      return true
+    } catch (err) {
+      return false
+    }
+  }
+
+  const signMessage = async ({ message }) => {
+    try {
+      console.log({ message })
+      if (!window.ethereum) { throw new Error('No crypto wallet found. Please install it.') }
+
+      await window.ethereum.send('eth_requestAccounts')
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const signer = provider.getSigner()
+      const signature = await signer.signMessage(message)
+      const address = await signer.getAddress()
+
+      return {
+        message,
+        signature,
+        address
+      }
+    } catch (err) {
+    }
+  }
+
   useEffect(() => {
     enableWeb3()
     setShowMint(
@@ -225,12 +259,12 @@ function App () {
         />
         {showMint && (
           <>
-            <Route path='/handicap' element={<Handicap user={user} content={content} />} />
+            <Route path='/handicap' element={<Handicap user={user} content={content} signMessage={signMessage} verifyMessage={verifyMessage} />} />
             <Route
               path='/challenges'
-              element={<Challenges user={user} isAuthenticated={isAuthenticated} content={content} />}
+              element={<Challenges user={user} isAuthenticated={isAuthenticated} content={content} signMessage={signMessage} verifyMessage={verifyMessage} />}
             />
-            <Route path='/prediction' element={<Prediction user={user} content={content} />} />
+            <Route path='/prediction' element={<Prediction user={user} content={content} signMessage={signMessage} verifyMessage={verifyMessage} />} />
             <Route path='/link' element={<BindAccount isAuthenticated={isAuthenticated} />} />
           </>
         )}

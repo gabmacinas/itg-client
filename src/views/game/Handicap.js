@@ -7,7 +7,7 @@ import withReactContent from 'sweetalert2-react-content'
 import Moment from 'react-moment'
 import Countdown from 'react-countdown'
 
-const Handicap = ({ user, content }) => {
+const Handicap = ({ user, content, signMessage, verifyMessage }) => {
   const { isAuthenticated, enableWeb3, isWeb3Enabled } = useMoralis()
   const MySwal = withReactContent(Swal)
   const [onSelected, setOnSelected] = useState([])
@@ -94,44 +94,48 @@ const Handicap = ({ user, content }) => {
               stringResult += ',' + element.selection
             }
           })
-          const handicapBody = {
-            user,
-            result: stringResult,
-            handicap: handicap.attributes.objectId,
-            onSelected: onSelected[index],
-            nftSelected: nftSelected.token_id
-          }
-          await save(handicapBody, {
-            onSuccess: async function () {
-              // await authenticate({ signingMessage: JSON.stringify(handicapBody) })
-              MySwal.fire({
-                title: 'Submission successful!',
-                icon: 'success',
-                text: 'Share your submission with your friends on Twitter!',
-                showCloseButton: true,
-                focusConfirm: false,
-                confirmButtonText: `<i class="icon ion-social-twitter"></i> ${content?.[0]?.attributes?.tweetButton || 'Tweet'}`,
-                customClass: {
-                  confirmButton: 'btn btn-swal'
-                }
-              }).then((result) => {
-                if (result.value) {
-                  newTweetHandler(index)
-                }
-              })
-              fetch()
-            },
-            onError: function (error) {
-              MySwal.fire({
-                title: 'Error!',
-                text: error.message,
-                icon: 'warning',
-                customClass: {
-                  confirmButton: 'btn btn-swal'
-                }
-              })
+          const signed = await signMessage({ message: stringResult })
+          if (signed) {
+            const handicapBody = {
+              user,
+              result: stringResult,
+              handicap: handicap.attributes.objectId,
+              onSelected: onSelected[index],
+              nftSelected: nftSelected.token_id,
+              signature: signed.signature,
+              address: signed.address
             }
-          })
+            await save(handicapBody, {
+              onSuccess: async function () {
+                MySwal.fire({
+                  title: 'Submission successful!',
+                  icon: 'success',
+                  text: 'Share your submission with your friends on Twitter!',
+                  showCloseButton: true,
+                  focusConfirm: false,
+                  confirmButtonText: `<i class="icon ion-social-twitter"></i> ${content?.[0]?.attributes?.tweetButton || 'Tweet'}`,
+                  customClass: {
+                    confirmButton: 'btn btn-swal'
+                  }
+                }).then((result) => {
+                  if (result.value) {
+                    newTweetHandler(index)
+                  }
+                })
+                fetch()
+              },
+              onError: function (error) {
+                MySwal.fire({
+                  title: 'Error!',
+                  text: error.message,
+                  icon: 'warning',
+                  customClass: {
+                    confirmButton: 'btn btn-swal'
+                  }
+                })
+              }
+            })
+          }
         }
       })
     } else {
@@ -379,6 +383,7 @@ const Handicap = ({ user, content }) => {
                   <th scope='col'>Membership</th>
                   <th scope='col'>Status</th>
                   <th scope='col'>Date</th>
+                  <th scope='col'>Verified</th>
                 </tr>
                 <tr></tr>
               </thead>
@@ -409,6 +414,7 @@ const Handicap = ({ user, content }) => {
                       <td>
                         <Moment fromNow>{submission?.createdAt}</Moment>
                       </td>
+                      <td><i className={verifyMessage({ message: submission?.result, address: submission?.address, signature: submission?.signature }) ? 'fa fa-check' : 'fa fa-times'} ></i></td>
                     </tr>
                   )
                 })}
@@ -425,7 +431,9 @@ const Handicap = ({ user, content }) => {
 
 Handicap.propTypes = {
   user: PropTypes.object,
-  content: PropTypes.array
+  content: PropTypes.array,
+  signMessage: PropTypes.func,
+  verifyMessage: PropTypes.func
 }
 
 export default Handicap
