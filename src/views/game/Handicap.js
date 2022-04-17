@@ -7,7 +7,7 @@ import withReactContent from 'sweetalert2-react-content'
 import Moment from 'react-moment'
 import Countdown from 'react-countdown'
 
-const Handicap = ({ user }) => {
+const Handicap = ({ user, content }) => {
   const { isAuthenticated, enableWeb3, isWeb3Enabled } = useMoralis()
   const MySwal = withReactContent(Swal)
   const [onSelected, setOnSelected] = useState([])
@@ -27,6 +27,32 @@ const Handicap = ({ user }) => {
   }, [], {
     autoFetch: false
   })
+
+  const newTweetHandler = (index) => {
+    let str = content[0].attributes.tweetMessageHandler
+
+    let stringResult = ''
+
+    onSelected[index].forEach((element, index) => {
+      if (index === 0) {
+        stringResult += element.selection
+      } else {
+        stringResult += ',' + element.selection
+      }
+    })
+
+    const mapObj = {
+      USER_RESULT: stringResult
+    }
+    const re = new RegExp(Object.keys(mapObj).join('|'), 'gi')
+    str = str.replace(re, function (matched) {
+      return mapObj[matched.toLowerCase()]
+    })
+
+    const tweetIntent = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(str)
+    const newWindow = window.open(tweetIntent, '_blank', 'noopener,noreferrer')
+    if (newWindow) newWindow.opener = null
+  }
 
   const { data: handicapSubmissions, fetch } = useMoralisCloudFunction('getUserSubmissions', {}, [], {
     autoFetch: false
@@ -79,17 +105,18 @@ const Handicap = ({ user }) => {
             onSuccess: async function () {
               // await authenticate({ signingMessage: JSON.stringify(handicapBody) })
               MySwal.fire({
-                title:
-                  '<a href="https://twitter.com/InTheGameNFT?ref_src=twsrc%5Etfw" class="fa fa-twitter" data-show-count="true">Follow @InTheGameNFT</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                title: 'Submission successful!',
                 icon: 'success',
-                html: '<p>Your selection has been submitted!</p>',
+                text: 'Share your submission with your friends on Twitter!',
                 showCloseButton: true,
                 focusConfirm: false,
-                confirmButtonText: '<i class="fa fa-thumbs-up"></i> Great!',
-                confirmButtonAriaLabel: 'Thumbs up, great!',
-                cancelButtonAriaLabel: 'Thumbs down',
+                confirmButtonText: `<i class="icon ion-social-twitter"></i> ${content?.[0]?.attributes?.tweetButton || 'Tweet'}`,
                 customClass: {
                   confirmButton: 'btn btn-swal'
+                }
+              }).then((result) => {
+                if (result.value) {
+                  newTweetHandler(index)
                 }
               })
               fetch()

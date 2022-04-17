@@ -7,7 +7,7 @@ import ModalChallenge from './modalChallenge'
 import Countdown from 'react-countdown'
 import { useNavigate } from 'react-router-dom'
 
-const Challenge = ({ user, isAuthenticated }) => {
+const Challenge = ({ user, isAuthenticated, content }) => {
   const navigate = useNavigate()
   const [onSelected, setOnSelected] = useState([])
   const [isMatchOver, setIsMatchOver] = useState(false)
@@ -192,6 +192,7 @@ const Challenge = ({ user, isAuthenticated }) => {
                                 handleClose={handleClose}
                                 isAuthenticated={isAuthenticated}
                                 save={save}
+                                content={content}
                               />
                             </div>
                           )}
