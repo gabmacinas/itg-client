@@ -6,7 +6,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Navbar from './components/navbar'
 import Footer from './components/footer'
 import Home from './views/home/Home'
-import { useMoralis, useMoralisQuery } from 'react-moralis'
+import { useMoralis, useMoralisQuery, useWeb3ExecuteFunction } from 'react-moralis'
 import contractAbi from './contractAbi.json'
 import Web3 from 'web3'
 import withReactContent from 'sweetalert2-react-content'
@@ -34,12 +34,13 @@ const nftContract = new web3.eth.Contract(contractAbi.abi, contractAddress)
 function App () {
   const {
     enableWeb3,
-    // Moralis,
+    // eslint-disable-next-line no-unused-vars
+    Moralis,
     isWeb3Enabled,
     isAuthenticated,
     authenticate,
     user,
-    web3: metamaskWeb3,
+    // web3: metamaskWeb3,
     isAuthenticating,
     logout
   } = useMoralis()
@@ -53,6 +54,7 @@ function App () {
   const [maxMintQty, setMaxMintQty] = useState(0)
   const [mintQty, setMintQty] = useState(1)
   const [balanceOf, setUserBalanceOf] = useState(0)
+  // eslint-disable-next-line no-unused-vars
   const [mintCost, setMintCost] = useState(0)
   const [showMint, setShowMint] = useState(false)
 
@@ -78,79 +80,123 @@ function App () {
     }
   }
 
+  const { data, fetch } = useWeb3ExecuteFunction({
+    contractAddress: contractAddress,
+    functionName: 'mint',
+    abi: contractAbi.abi,
+    params: {
+      _mintAmount: mintQty
+    },
+    msgValue: BigInt(mintCost) * BigInt(mintQty)
+  })
+
   const mint = async () => {
     if (!isAuthenticated) return authenticate()
     if (mintQty > 0 && mintQty <= maxMintQty) {
+      console.log('mintQty', mintQty)
       setMinting(true)
-      const nonce = await web3.eth.getTransactionCount(user.attributes.ethAddress, 'latest')
-      const gasPrice = await web3.eth.getGasPrice()
+      await fetch().then(async (res) => {
+        console.log('res', res)
+      })
+      console.log(data)
+      // const sendOptions = {
+      //   contractAddress: user.attributes.ethAddress,
+      //   functionName: 'mint',
+      //   abi: contractAbi.abi,
+      //   params: {
+      //     _mintAmount: mintQty
+      //   }
+      // }
+      // const transaction = await Moralis.executeFunction(sendOptions).then(async (result) => {
+      //   if (result.success) {
+      //     setMinting(false)
+      //     setMintQty(1)
+      //     setShowMint(false)
+      //     setUserBalanceOf(await nftContract.methods.balanceOf(user.attributes?.ethAddress).call())
+      //     MySwal.fire({
+      //       title: 'Success!',
+      //       text: 'You have successfully minted your tokens!',
+      //       icon: 'success'
+      //     })
+      //   } else {
+      //     setMinting(false)
+      //     MySwal.fire({
+      //       title: 'Error!',
+      //       text: 'Something went wrong, please try again later.',
+      //       icon: 'error'
+      //     })
+      //   }
+      // })
+      // console.log(transaction)
+      // const nonce = await web3.eth.getTransactionCount(user.attributes.ethAddress, 'latest')
+      // const gasPrice = await web3.eth.getGasPrice()
       // const cost = Moralis.Units.FromWei(mintCost)
-      const mintOptions = {
-        from: user.attributes.ethAddress,
-        gasPrice: gasPrice,
-        nonce: nonce,
-        value: mintCost * mintQty
-      }
-      await nftContract.methods
-        .mint(mintQty)
-        .estimateGas(mintOptions)
-        .then(async (gasLimit) => {
-          const mmkWeb3 = new Web3(metamaskWeb3.provider)
-          const metamaskContract = new mmkWeb3.eth.Contract(contractAbi.abi, contractAddress)
-          await metamaskContract.methods
-            .mint(mintQty)
-            .send({
-              from: user.attributes.ethAddress,
-              gasPrice: gasPrice,
-              nonce: nonce,
-              value: mintCost * mintQty,
-              gas: gasLimit
-            })
-            .then(async (receipt) => {
-              setMinting(false)
-              setTotalMint(Number(totalMint) + Number(mintQty))
-              MySwal.fire({
-                title: 'Thank You!',
-                html: `
-                <p>You have successfully purchased <b>${mintQty}</b> membership${mintQty > 1 ? 's' : ''}. 
-                <a href='https://${
-                  process.env.REACT_APP_NODE_ENV === 'development' && process.env.REACT_APP_TESTNET_NETWORK_NAME + '.'
-                }etherscan.io/tx/${
-                  receipt.transactionHash
-                }' target="_blank">Click here to view your transaction in Etherscan</a>
-                </p>
-                `,
-                icon: 'success',
-                confirmButtonText: 'OK',
-                customClass: {
-                  confirmButton: 'btn btn-swal'
-                }
-              })
-              await getContractInformation()
-            })
-            .catch((error) => {
-              setMinting(false)
-              MySwal.fire({
-                title: 'Error',
-                text: error.message,
-                icon: 'error',
-                confirmButtonText: 'OK',
-                customClass: {
-                  confirmButton: 'btn btn-swal'
-                }
-              })
-            })
-        })
-        .catch((err) => {
-          MySwal.fire({
-            title: 'Metamask Error',
-            text: err.message,
-            icon: 'error',
-            customClass: {
-              confirmButton: 'btn btn-swal'
-            }
-          })
-        })
+      // const mintOptions = {
+      //   from: user.attributes.ethAddress,
+      //   gasPrice: gasPrice,
+      //   nonce: nonce,
+      //   value: Moralis.Units.ETH(mintQty * cost)
+      // }
+      // await nftContract.methods
+      //   .mint(mintQty)
+      //   .estimateGas(mintOptions)
+      //   .then(async (gasLimit) => {
+      //     const mmkWeb3 = new Web3(metamaskWeb3.provider)
+      //     const metamaskContract = new mmkWeb3.eth.Contract(contractAbi.abi, contractAddress)
+      //     await metamaskContract.methods
+      //       .mint(mintQty)
+      //       .send({
+      //         from: user.attributes.ethAddress,
+      //         gasPrice: gasPrice,
+      //         nonce: nonce,
+      //         value: Moralis.Units.ETH(mintQty * cost),
+      //         gas: gasLimit
+      //       })
+      //       .then(async (receipt) => {
+      //         setMinting(false)
+      //         setTotalMint(Number(totalMint) + Number(mintQty))
+      //         MySwal.fire({
+      //           title: 'Thank You!',
+      //           html: `
+      //           <p>You have successfully purchased <b>${mintQty}</b> membership${mintQty > 1 ? 's' : ''}.
+      //           <a href='https://${
+      //             process.env.REACT_APP_NODE_ENV === 'development' && process.env.REACT_APP_TESTNET_NETWORK_NAME + '.'
+      //           }etherscan.io/tx/${
+      //             receipt.transactionHash
+      //           }' target="_blank">Click here to view your transaction in Etherscan</a>
+      //           </p>
+      //           `,
+      //           icon: 'success',
+      //           confirmButtonText: 'OK',
+      //           customClass: {
+      //             confirmButton: 'btn btn-swal'
+      //           }
+      //         })
+      //         await getContractInformation()
+      //       })
+      //       .catch((error) => {
+      //         setMinting(false)
+      //         MySwal.fire({
+      //           title: 'Error',
+      //           text: error.message,
+      //           icon: 'error',
+      //           confirmButtonText: 'OK',
+      //           customClass: {
+      //             confirmButton: 'btn btn-swal'
+      //           }
+      //         })
+      //       })
+      //   })
+      //   .catch((err) => {
+      //     MySwal.fire({
+      //       title: 'Metamask Error',
+      //       text: err.message,
+      //       icon: 'error',
+      //       customClass: {
+      //         confirmButton: 'btn btn-swal'
+      //       }
+      //     })
+      //   })
       setMinting(false)
     } else {
       MySwal.fire({
