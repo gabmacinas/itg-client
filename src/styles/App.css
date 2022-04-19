@@ -21,7 +21,7 @@
 --bs-table-accent-bg: red;
 }
 
-body {background: var(--dark) no-repeat;  color: var(--white); background-image: url('../img/BG3.svg');}
+body {background: var(--dark) no-repeat; background-position: top; background-size: 100%; min-height: 800px; color: var(--white); background-image: url('../img/BG3.svg'); background-attachment: fixed;}
 h1, h2, h3, h4, h5,h6 {font-family: Montserrat, sans-serif; font-weight: 700;}
 .h-accent {color: var(--primary);}
 a {color: var(--lightgrey); text-decoration: none;}
@@ -42,8 +42,9 @@ main {min-height: 400px; max-width: 960px; margin: 0 auto;}
 
 .btn { background: var(--primary); border-style: none; color: var(--dark); --dark: #1F212B; --dark-rgb: 31,33,43; }
 .btn-check:active + .btn-primary:focus, .btn-check:checked + .btn-primary:focus, .btn-primary.active:focus, .btn-primary:active:focus, .show > .btn-primary.dropdown-toggle:focus {box-shadow: 0 0 0 .25rem var(--opac-dark); background: var(--primary);}
-.btn-check:active + .btn-primary, .btn-check:checked + .btn-primary, .btn-primary.active, .btn-primary:active  .show > .btn-primary.dropdown-toggle {color: var(--white); border-color: transparent; background: var(--primary); }
+.btn-check:active + .btn-primary, .btn-check:checked + .btn-primary, .btn-primary.active, .btn-primary:active  .show > .btn-primary.dropdown-toggle {color: var(--dark); border-color: transparent; background: var(--primary); }
 .dropdown-item.active, .dropdown-item:active {background: var(--primary); color: var(--dark);}
+.navbar-dark .navbar-toggler-icon {color: red;}
 
 .showme {background: red;}
 .showme2 {background: blue;}
@@ -174,9 +175,9 @@ main {min-height: 400px; max-width: 960px; margin: 0 auto;}
 .social-icons:hover {background: rgba(255,255,255,0.4); transition: 400ms;}
 
 /* XS screens */
-@media (max-width: 576px) {  
+@media (max-width: 576px) {
 
-} 
+}
 
 @media (min-width:768px) {
   #sub-head {color: var(--dark); font-size: 31px; padding-top: 10px; padding-bottom: 12px; line-height: 54px; }
@@ -190,6 +191,6 @@ main {min-height: 400px; max-width: 960px; margin: 0 auto;}
 
 @media (max-width:991px) {
    .footer-dark .item.social { text-align: center;  margin-top: 20px;}
-   
+
 
 }

@@ -20,6 +20,14 @@ const Home = ({ mint, isMinting, totalMint, maxSupply, isMintPaused, isWhitelist
         balanceOf={Number(balanceOf)}
         isAuthenticated={isAuthenticated}
       />
+      <section className="mb-5">
+        <div className="container text-center ">
+          <h2>What&apos;s This About?</h2>
+          <div className="ratio ratio-16x9">
+            <iframe src="https://www.youtube.com/embed/drP4C3ru7lk" title="YouTube video" allowFullScreen></iframe>
+          </div>
+        </div>
+      </section>
       <Faqs />
     </>
   )
