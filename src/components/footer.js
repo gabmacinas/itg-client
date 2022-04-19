@@ -46,7 +46,7 @@ export default function footer () {
                 <i className='icon ion-social-twitter'></i>
               </a>
               <a className='social-icons' href='https://opensea.io/collection/in-the-game-nft'>
-                <img className="icon-img" src='../assets/img/Opensea-icon2.png' />
+                <img className="icon-img" src='../assets/img/opensea-icon2.png' />
               </a>
               <a className='social-icons' href='https://etherscan.io/address/0x430FE8feb76f7F7a611fa84ac0bbCF66827816B3'>
                 <img className="icon-img" src='../assets/img/etherscan-icon.png' />
