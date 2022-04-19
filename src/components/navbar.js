@@ -9,7 +9,7 @@ const navbar = ({ authenticate, user, isAuthenticated, isAuthenticating, logout,
   }
 
   return (
-    <Navbar collapseOnSelect variant='dark' expand='lg' sticky='top' className='navbar navigation-clean'>
+    <Navbar collapseOnSelect variant='light' expand='lg' sticky='top' className='navbar navigation-clean'>
       <Container>
         <LinkContainer to='/'>
           <Navbar.Brand>
@@ -22,12 +22,12 @@ const navbar = ({ authenticate, user, isAuthenticated, isAuthenticating, logout,
           <Nav className='navbar-nav ms-auto'>
             {!showMint
               ? (
-              <Nav.Link className='nav-item' style={{ color: '#fee600' }}>
+              <Nav.Link className='nav-item'>
                 <b>Minting Soon</b>
               </Nav.Link>
                 )
               : (
-              <Nav.Link className='nav-item' style={{ color: '#fee600' }}>
+              <Nav.Link className='nav-item'>
                 <b>{content?.[0]?.attributes?.prizeNavbar || null}</b>
               </Nav.Link>
                 )}
