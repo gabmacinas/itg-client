@@ -67,11 +67,7 @@ const Intro = ({
                     </span>
                   </>
                           )
-                        : (
-                  <h3 className='fw-bold' id='sub-head'>
-                    Coming Soon!
-                  </h3>
-                          )
+                        : null
                     )
                   : (
                 <>

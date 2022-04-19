@@ -117,7 +117,7 @@ function App () {
                   process.env.REACT_APP_NODE_ENV === 'development' && process.env.REACT_APP_TESTNET_NETWORK_NAME + '.'
                 }etherscan.io/tx/${
                   receipt.transactionHash
-                }' target="_blank">Click here to view your transaction in Etherscan</a>
+                }' target="_blank">Click here to view your transaction in Etherscan</a>. NOTE: It might take a while for the membership to appear for all games. If the membership does not appear with the game, refreshing / re-authenticating via metamask may solve this issue.
                 </p>
                 `,
                 icon: 'success',
