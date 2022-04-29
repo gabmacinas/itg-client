@@ -396,7 +396,7 @@ const Prediction = ({ user, content, signMessage, verifyMessage }) => {
                     dataResult = '$$WIN$$'
                     iconResult = 'fa fa-trophy'
                   } else if (submission?.result !== '' && submission?.prediction?.status === 'active') {
-                    dataResult = 'Pending'
+                    dataResult = 'Submitted'
                   } else {
                     iconResult = 'fa fa-times'
                   }

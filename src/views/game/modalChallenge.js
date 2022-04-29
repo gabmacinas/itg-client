@@ -116,29 +116,49 @@ function modalChallenge ({
   }
 
   const pushTopShotSelected = async (nftSelected) => {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-right',
+      iconColor: '#FEE603',
+      customClass: {
+        popup: 'colored-toast'
+      },
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true
+    })
     if (Number(challenge.attributes.momentQty) <= Number(topShotSelected.length)) {
-      const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-right',
-        iconColor: 'white',
-        customClass: {
-          popup: 'colored-toast'
-        },
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true
-      })
       return await Toast.fire({
         icon: 'warning',
+        iconColor: 'white',
         title: 'You have reached the maximum TopShot Moments you can add.'
       })
     }
     if (topShotSelected.find((nft) => nft === nftSelected)) return
     setTopshotSelected([...topShotSelected, nftSelected])
+    return await Toast.fire({
+      icon: 'success',
+      title: `You've picked ${nftSelected}`
+    })
   }
 
   const removeTopShotSelected = async (nftSelected) => {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-right',
+      iconColor: 'white',
+      customClass: {
+        popup: 'colored-toast'
+      },
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true
+    })
     setTopshotSelected(topShotSelected.filter((nft) => nft !== nftSelected))
+    return await Toast.fire({
+      icon: 'info',
+      title: `You've removed ${nftSelected}`
+    })
   }
 
   const newTweetHandler = () => {
@@ -169,8 +189,8 @@ function modalChallenge ({
     ) {
       enableWeb3()
       MySwal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to update your submission!",
+        title: 'Lock in your Challenge?',
+        text: "You won't be able to update your players once submitted.",
         icon: 'info',
         showCancelButton: true,
         confirmButtonText: 'Yes, submit it!',
@@ -224,7 +244,7 @@ function modalChallenge ({
     } else {
       MySwal.fire({
         title: 'Notice!',
-        text: 'Make sure to put your selection and membership!',
+        text: 'Make sure to put your players and membership!',
         icon: 'warning',
         confirmButtonColor: '#FEE603',
         customClass: {
@@ -256,19 +276,26 @@ function modalChallenge ({
         </Button>
         <Modal.Body style={{ backgroundColor: '#20212d', color: 'white' }}>
           <div className='container pb-4 pt-4'>
-            <div className='align-items-center row'>
-              <div className='col'>
-                <hr className='border-secondary mb-0 mt-0' />
+          <div className='container pb-4 pt-4'>
+                <div className='align-items-center row'>
+                  <div className='col'>
+                    <hr className='border-secondary mb-0 mt-0' />
+                  </div>
+                  <div className='col-auto'>
+                    <h2 className='fw-bold h4 mb-0 text-uppercase' style={{ color: '#fee600' }}>
+                      {challenge.attributes.title}
+                    </h2>
+                  </div>
+                  <div className='col'>
+                    <hr className='border-secondary mb-0 mt-0' />
+                  </div>
+                </div>
+                <div className='col-md-12'>
+                  <h4 className='h4 lh-base p-5 text-center text-light'>
+                    {challenge.attributes.description}
+                  </h4>
+                </div>
               </div>
-              <div className='col-auto'>
-                <h2 className='fw-bold h4 mb-0 text-uppercase' style={{ color: '#fee600' }}>
-                  Enter Challenge
-                </h2>
-              </div>
-              <div className='col'>
-                <hr className='border-secondary mb-0 mt-0' />
-              </div>
-            </div>
             <div className='col-md-12'>
               <h4 className='h4 lh-base p-5 text-center text-light' style={{ color: '#fee600' }}>Pick Your Membership</h4>
             </div>

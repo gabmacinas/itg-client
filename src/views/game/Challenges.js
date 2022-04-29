@@ -266,7 +266,7 @@ const Challenge = ({ user, isAuthenticated, content, signMessage, verifyMessage 
                         dataResult = '$$WIN$$'
                         iconResult = 'fa fa-trophy'
                       } else if (submission?.result !== '' && submission?.challenge?.status === 'active') {
-                        dataResult = 'Pending'
+                        dataResult = 'Submitted'
                       } else {
                         dataResult = ''
                         iconResult = 'fa fa-times'

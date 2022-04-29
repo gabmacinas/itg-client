@@ -395,7 +395,7 @@ const Handicap = ({ user, content, signMessage, verifyMessage }) => {
                     dataResult = '$$WIN$$'
                     iconResult = 'fa fa-trophy'
                   } else if (submission?.result !== '' && submission?.handicap?.status === 'active') {
-                    dataResult = 'Pending'
+                    dataResult = 'Submitted'
                   } else {
                     iconResult = 'fa fa-times'
                   }
