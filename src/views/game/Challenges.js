@@ -250,7 +250,7 @@ const Challenge = ({ user, isAuthenticated, content, signMessage, verifyMessage 
                       <th scope='col'>Result</th>
                       <th scope='col'>Status</th>
                       <th scope='col'>Date</th>
-                      <th scope='col'>Verified</th>
+                      {/* <th scope='col'>Verified</th> */}
                     </tr>
                     <tr></tr>
                   </thead>
@@ -285,7 +285,7 @@ const Challenge = ({ user, isAuthenticated, content, signMessage, verifyMessage 
                           <td>
                             <Moment fromNow>{submission?.createdAt}</Moment>
                           </td>
-                          <td><i className={verifyMessage({ message: JSON.stringify(submission?.result), address: submission?.address, signature: submission?.signature }) ? 'fa fa-check' : 'fa fa-times'} ></i></td>
+                          {/* <td><i className={verifyMessage({ message: JSON.stringify(submission?.result), address: submission?.address, signature: submission?.signature }) ? 'fa fa-check' : 'fa fa-times'} ></i></td> */}
                         </tr>
                       )
                     })}

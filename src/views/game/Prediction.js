@@ -384,7 +384,7 @@ const Prediction = ({ user, content, signMessage, verifyMessage }) => {
                   <th scope='col'>Membership</th>
                   <th scope='col'>Status</th>
                   <th scope='col'>Date</th>
-                  <th scope='col'>Verified</th>
+                  {/* <th scope='col'>Verified</th> */}
                 </tr>
                 <tr></tr>
               </thead>
@@ -415,7 +415,7 @@ const Prediction = ({ user, content, signMessage, verifyMessage }) => {
                       <td>
                         <Moment fromNow>{submission?.createdAt}</Moment>
                       </td>
-                      <td><i className={verifyMessage({ message: submission?.result, address: submission?.address, signature: submission?.signature }) ? 'fa fa-check' : 'fa fa-times'} ></i></td>
+                      {/* <td><i className={verifyMessage({ message: submission?.result, address: submission?.address, signature: submission?.signature }) ? 'fa fa-check' : 'fa fa-times'} ></i></td> */}
                     </tr>
                   )
                 })}
